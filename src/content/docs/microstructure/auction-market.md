@@ -13,29 +13,25 @@ sidebar:
 
 ### Price as a Facilitating Mechanism
 
-```
-  Traditional view: price reflects "true value"
-  AMT view:         price is a SEARCH MECHANISM to facilitate trade
+```mermaid
+graph TD
+    A[Market State] --> B{Directional Conviction?}
+    
+    B -- Yes --> C[TRENDING]
+    C --> D[Advertising for participants]
+    D --> E[Price moves away from value]
+    E --> F[Strong directional move on volume]
+    
+    B -- No --> G[BALANCED / RANGE]
+    G --> H[Found Fair Value Area]
+    H --> I[Price rotates within range]
+    I --> J[Both sides satisfied at current prices]
 
-  Markets are always in one of two states:
-  ┌──────────────────────────────────────────────────────────┐
-  │ TRENDING (directional auction):                          │
-  │ Market is ADVERTISING for participants at new prices     │
-  │ → Trying to attract more buyers (rallying) or           │
-  │   more sellers (declining)                               │
-  │ → Price moves away from value until activity is found    │
-  │ → Evidence: strong directional move on volume            │
-  │                                                         │
-  │ BALANCED / RANGE (time-at-price):                        │
-  │ Market has found a FAIR VALUE AREA                       │
-  │ → Both buyers and sellers are satisfied at current prices│
-  │ → Price rotates within a range                          │
-  │ → Evidence: overlapping TPOs, value area visible         │
-  └──────────────────────────────────────────────────────────┘
-
-  Key insight: Price moves to GENERATE activity, not to reflect it.
-  When price moves and no new activity is generated:
-  → Auction fails → price reverses back toward value
+    classDef trending fill:#f9f2f4,stroke:#333,stroke-width:2px,color:#333;
+    classDef balanced fill:#f4f9f2,stroke:#333,stroke-width:2px,color:#333;
+    
+    class C,D,E,F trending;
+    class G,H,I,J balanced;
 ```
 
 ### The Auction Process

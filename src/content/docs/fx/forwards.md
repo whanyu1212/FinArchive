@@ -24,23 +24,21 @@ The forward rate is **not a forecast** of where spot will be in the future. It i
 
 ### The Formula
 
-```
-         (1 + r_d × T)
-  F = S × ─────────────
-         (1 + r_f × T)
-```
+$$
+F = S \times \frac{(1 + r_d \times T)}{(1 + r_f \times T)}
+$$
 
 Where:
-- `F` = Forward rate (base/quote)
-- `S` = Spot rate
-- `r_d` = Domestic (quote currency) interest rate
-- `r_f` = Foreign (base currency) interest rate
-- `T` = Time in years
+*   $F$ = Forward rate (base/quote)
+*   $S$ = Spot rate
+*   $r_d$ = Domestic (quote currency) interest rate
+*   $r_f$ = Foreign (base currency) interest rate
+*   $T$ = Time in years
 
 For continuous compounding:
-```
-  F = S × e^((r_d − r_f) × T)
-```
+$$
+F = S \times e^{(r_d - r_f)T}
+$$
 
 ### Numerical Example
 
@@ -62,20 +60,22 @@ EUR/USD trades at a **forward premium** for USD (USD interest rates are higher),
 
 ---
 
-## Forward Points (Swap Points)
+### Forward Points (Swap Points)
 
 In practice, forwards are quoted as **forward points** added to (or subtracted from) the spot rate:
 
-```
-  Forward Points = F − S
-  (expressed in pips)
+$$
+\text{Forward Points} = F - S
+$$
+*(expressed in pips)*
 
-  From example above:
-  Forward Points = 1.0892 − 1.0850 = 0.0042 = 42 pips
+From example above:
+$$
+\text{Forward Points} = 1.0892 - 1.0850 = 0.0042 = 42 \text{ pips}
+$$
 
-  Market quote:
-  EUR/USD 3M fwd:  Spot 1.0850 + 42 fwd pts = 1.0892
-```
+Market quote:
+**EUR/USD 3M fwd:** Spot 1.0850 + 42 fwd pts = 1.0892
 
 ### Premium vs. Discount
 

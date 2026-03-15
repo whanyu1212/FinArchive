@@ -13,43 +13,40 @@ sidebar:
 
 The **interest rate differential** between two countries is the difference between their benchmark interest rates (policy rates or market rates such as overnight rates, 2Y yields, etc.):
 
-```
-  IRD = Domestic Rate − Foreign Rate
+$$
+\text{IRD} = \text{Domestic Rate} - \text{Foreign Rate}
+$$
 
-  Example:
-  US Fed Funds rate: 5.25%
-  ECB deposit rate:  4.00%
-  IRD (USD−EUR):     +1.25%
+**Example:**
+*   **US Fed Funds rate:** 5.25%
+*   **ECB deposit rate:** 4.00%
+*   **IRD (USD−EUR):** $+1.25\%$
 
-  → USD pays 1.25% more per year than EUR
-  → USD is the "higher-yielding" currency
-  → Forward pricing: USD trades at forward DISCOUNT vs. EUR (CIP)
-  → Carry trade logic: borrow EUR, invest in USD
-```
+→ **USD** pays 1.25% more per year than EUR.
+→ **USD** is the "higher-yielding" currency.
+→ **Forward pricing:** USD trades at forward DISCOUNT vs. EUR (CIP).
+→ **Carry trade logic:** borrow EUR, invest in USD.
 
 ---
 
 ## From Policy Rate to FX: The Transmission Chain
 
-```
-  CB policy decision
-         │
-         ▼
-  Money market rates (SOFR, €STR, SONIA)
-         │
-         ▼
-  Short-term government bond yields (2Y, 3Y)
-         │
-         ├──────────► FX forward rates (CIP pricing)
-         │
-         ▼
-  Carry trade attractiveness
-         │
-         ▼
-  Capital flows (into higher-yielding currency)
-         │
-         ▼
-  Currency spot rate adjusts
+```mermaid
+graph TD
+    A[CB policy decision] --> B[Money market rates (SOFR, €STR, SONIA)]
+    B --> C[Short-term government bond yields (2Y, 3Y)]
+    C --> D[FX forward rates (CIP pricing)]
+    C --> E[Carry trade attractiveness]
+    E --> F[Capital flows (into higher-yielding currency)]
+    F --> G[Currency spot rate adjusts]
+
+    classDef cb fill:#e1f5fe,stroke:#333,stroke-width:2px;
+    classDef market fill:#fff3e0,stroke:#333,stroke-width:1px;
+    classDef fx fill:#f3e5f5,stroke:#333,stroke-width:1px;
+
+    class A cb;
+    class B,C market;
+    class D,E,F,G fx;
 ```
 
 ---
@@ -58,25 +55,26 @@ The **interest rate differential** between two countries is the difference betwe
 
 For longer-term FX analysis, **real interest rates** (adjusted for inflation) matter more than nominal rates:
 
-```
-  Real rate = Nominal rate − Expected inflation
+$$
+\text{Real rate} = \text{Nominal rate} - \text{Expected inflation}
+$$
 
-  Example A: Country with high nominal but high inflation
-  Nominal rate: 10.0%
-  Inflation:     9.5%
-  Real rate:    +0.5% → LOW real rate, weak currency pull
+:::note[Real Rate Examples]
+**Example A: Country with high nominal but high inflation**
+*   Nominal rate: 10.0%
+*   Inflation: 9.5%
+*   **Real rate: +0.5%** → LOW real rate, weak currency pull.
 
-  Example B: Country with moderate nominal but low inflation
-  Nominal rate: 5.0%
-  Inflation:    1.5%
-  Real rate:   +3.5% → HIGH real rate, strong currency pull
+**Example B: Country with moderate nominal but low inflation**
+*   Nominal rate: 5.0%
+*   Inflation: 1.5%
+*   **Real rate: +3.5%** → HIGH real rate, strong currency pull.
+:::
 
-  US 2022 example:
-  → Fed hiked to 5.25% but inflation ran at 8%+
-  → Initially real rates deeply negative → USD still strengthened
-    because rate hike TRAJECTORY and narrative mattered more than
-    current real rates
-```
+**US 2022 example:**
+*   Fed hiked to 5.25% but inflation ran at 8%+ initially.
+*   Real rates were deeply negative, yet the USD still strengthened because the **rate hike trajectory** and narrative mattered more than current real rates.
+
 
 ---
 

@@ -5,6 +5,8 @@ sidebar:
   order: 13
 ---
 
+import Chart from '../../../components/Chart.astro';
+
 Understanding structured products at an expert level means being able to **decompose** them into their constituent option components, understand the **bank's hedging problem**, and recognise the **asymmetric risk profile** from the client's perspective.
 
 ---
@@ -60,17 +62,59 @@ A **Target Redemption Forward (TARF)** appears to offer a client a better-than-m
   Fixing > 1.0950:  +gain — but accumulates toward $300k target
                     Once target hit → structure terminates (no more gains)
   Fixing < 1.0950:  −loss — no floor, continues every month
+```
 
-  CLIENT P&L profile (total over life):
-      +$300k ├───── TARGET (maximum gain; terminates here)
-             │         /───── gains build each favorable month
-      $0     ├────────────────────────────────────────── Months
-             │╲
-             │ ╲──── losses build every unfavorable month
-             │         (continue until full 12 months done)
-     −large  ├────── NO FLOOR: if EUR/USD drops to 1.00, loss = 0.0950 × €1m
-                     × remaining months = potentially millions
+<div style="margin: 2rem 0;">
+  <h4 style="text-align: center; margin-bottom: 0.5rem;">CLIENT P&L profile (total over life)</h4>
+  <Chart id="tarf-payoff" config={{
+    type: 'line',
+    data: {
+      labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+      datasets: [
+        {
+          label: 'Favorable Scenario (Hits Target)',
+          data: [50, 100, 150, 200, 250, 300, 300, 300, 300, 300, 300, 300],
+          borderColor: 'rgba(76, 175, 80, 1)',
+          backgroundColor: 'rgba(76, 175, 80, 0.1)',
+          fill: false,
+          tension: 0,
+          borderWidth: 2
+        },
+        {
+          label: 'Unfavorable Scenario (Uncapped Loss)',
+          data: [-50, -100, -150, -250, -350, -450, -600, -750, -900, -1050, -1200, -1500],
+          borderColor: 'rgba(244, 67, 54, 1)',
+          backgroundColor: 'rgba(244, 67, 54, 0.1)',
+          fill: false,
+          tension: 0,
+          borderWidth: 2,
+          borderDash: [5, 5]
+        },
+        {
+          label: 'Target Cap ($300k)',
+          data: [300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300, 300],
+          borderColor: 'rgba(156, 163, 175, 0.5)',
+          borderWidth: 1,
+          pointRadius: 0,
+          fill: false
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: { 
+          title: { display: true, text: 'Cumulative P&L ($000s)' },
+          grid: { color: (context) => context.tick.value === 0 ? 'rgba(156, 163, 175, 0.5)' : 'rgba(156, 163, 175, 0.1)' }
+        },
+        x: { title: { display: true, text: 'Months' } }
+      }
+    }
+  }} />
+</div>
 
+```
   The TARF is structurally a:
   → Capped long call strip (limited by target)
   → Uncapped short put strip (unlimited loss)
@@ -108,24 +152,20 @@ The **accumulator** (or "Accumulate if spot is favourable / Double up if adverse
 
 ### Structure Detail
 
-```
-  Typical USD/CNH accumulator for Chinese exporter:
-  ─────────────────────────────────────────────────────────
-  Spot rate:         7.1500
-  Strike (deal rate): 7.1000  (better than spot — client sells USD cheaper)
-  Knock-out:         7.2500  (contract terminates if USD gets too strong)
-  Knock-in (doubler): 6.9500  (client must sell DOUBLE notional if CNH weakens)
-  Tenor:             12 months, monthly fixings
-  Notional:          USD 1,000,000 per fixing (or $2m if knocked in)
-  ─────────────────────────────────────────────────────────
+**Typical USD/CNH accumulator for Chinese exporter:**
+*   **Spot rate:** 7.1500
+*   **Strike (deal rate):** 7.1000 (better than spot — client sells USD cheaper)
+*   **Knock-out:** 7.2500 (contract terminates if USD gets too strong)
+*   **Knock-in (doubler):** 6.9500 (client must sell DOUBLE notional if CNH weakens)
+*   **Tenor:** 12 months, monthly fixings
+*   **Notional:** USD 1,000,000 per fixing (or $2m if knocked in)
 
-  Each monthly fixing:
-  ┌─────────────────────────────────────────────────────────┐
-  │ 6.9500 < fixing < 7.2500:  Sell USD 1m at 7.1000       │
-  │ fixing < 6.9500 (KI):       Sell USD 2m at 7.1000      │
-  │ fixing > 7.2500 (KO):       Contract terminated ✓       │
-  └─────────────────────────────────────────────────────────┘
-```
+**Each monthly fixing:**
+:::tip[Settlement Scenarios]
+*   **$6.9500 < \text{fixing} < 7.2500$:** Sell USD 1m at 7.1000
+*   **$\text{fixing} < 6.9500$ (KI):** Sell USD 2m at 7.1000
+*   **$\text{fixing} > 7.2500$ (KO):** Contract terminated ✓
+:::
 
 ### Decomposing the Accumulator
 

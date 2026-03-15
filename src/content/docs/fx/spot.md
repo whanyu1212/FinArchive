@@ -11,22 +11,28 @@ A **spot FX transaction** is the purchase or sale of one currency against anothe
 
 ## How a Spot Trade Works
 
-```
-  TRADE DATE (T)               SETTLEMENT DATE (T+2)
-  ──────────────               ──────────────────────
-  Buyer agrees to buy          Buyer delivers USD
-  EUR/USD at 1.0850            Seller delivers EUR
-         │                              │
-         ▼                              ▼
-  Price locked in              Currencies physically exchanged
-  (no cash moves yet)          via correspondent banks / SWIFT
+```mermaid
+sequenceDiagram
+    participant Buyer
+    participant Seller
+    participant SWIFT
+    
+    Note over Buyer, Seller: TRADE DATE (T)
+    Buyer->>Seller: Agrees to buy EUR/USD at 1.0850
+    Note right of Buyer: Price locked in
+    
+    Note over Buyer, SWIFT: SETTLEMENT DATE (T+2)
+    Buyer->>SWIFT: Delivers USD 10,850,000
+    Seller->>SWIFT: Delivers EUR 10,000,000
+    SWIFT-->>Buyer: Credits EUR 10,000,000
+    SWIFT-->>Seller: Credits USD 10,850,000
 ```
 
 ### Example
 > A corporate buys €10,000,000 spot against USD at EUR/USD 1.0850.
-> - **EUR received**: €10,000,000
-> - **USD paid**: $10,850,000
-> - Settlement: 2 business days after trade date
+> *   **EUR received:** €10,000,000
+> *   **USD paid:** $10,850,000
+> *   **Settlement:** 2 business days after trade date
 
 ---
 
@@ -34,20 +40,20 @@ A **spot FX transaction** is the purchase or sale of one currency against anothe
 
 Market makers quote a **two-way price**: the **bid** (price to buy base) and the **offer/ask** (price to sell base). The spread is the market maker's compensation for providing liquidity.
 
-```
-  EUR/USD:   1.08498  /  1.08502
-             ───┬───     ───┬───
-              BID           ASK
-        (bank buys EUR)  (bank sells EUR)
-        (client sells)   (client buys)
+:::note[Market Quote: EUR/USD]
+**1.08498 / 1.08502**
+*   **BID (1.08498):** Bank buys EUR / Client sells EUR
+*   **ASK (1.08502):** Bank sells EUR / Client buys EUR
 
-  Spread = 0.00004 = 0.4 pips
-```
+$$
+\text{Spread} = 1.08502 - 1.08498 = 0.00004 = 0.4 \text{ pips}
+$$
+:::
 
-Spread determinants:
-- **Liquidity**: EUR/USD may trade 0.1–0.5 pips; EM pairs can be 20–200+ pips
-- **Volatility**: Spreads widen sharply during risk events (NFP, FOMC)
-- **Deal size**: Large tickets may move through the spread or require voice execution
+**Spread determinants:**
+*   **Liquidity:** EUR/USD may trade 0.1–0.5 pips; EM pairs can be 20–200+ pips.
+*   **Volatility:** Spreads widen sharply during risk events (NFP, FOMC).
+*   **Deal size:** Large tickets may move through the spread or require voice execution.
 
 ---
 
@@ -66,20 +72,18 @@ In the interbank market, the minimum is typically **USD 1–5 million** per tick
 
 ## Price Discovery
 
-Spot FX prices are formed through a **continuous two-sided auction** process across:
+Spot FX prices are formed through a **continuous two-sided auction** process:
 
-1. **Electronic Communication Networks (ECNs)**: EBS (now CME Group), Reuters Matching — primary interdealer venues for EUR/USD, USD/JPY
-2. **Single-Dealer Platforms (SDPs)**: Each major bank's proprietary e-trading platform (e.g., Citi Velocity, UBS Neo)
-3. **Multi-Dealer Platforms (MDPs)**: FXall, Bloomberg FX, 360T — aggregated liquidity for clients
-4. **Voice brokers**: Still used for large tickets and EM currencies
+1.  **ECNs (Electronic Communication Networks):** EBS (CME Group), Reuters Matching — primary interdealer venues for EUR/USD, USD/JPY.
+2.  **SDPs (Single-Dealer Platforms):** Banks' proprietary platforms (e.g., Citi Velocity, UBS Neo).
+3.  **MDPs (Multi-Dealer Platforms):** FXall, Bloomberg FX, 360T — aggregated liquidity for clients.
+4.  **Voice Brokers:** Still used for large tickets and EM currencies.
 
 ### The Spread Ecology
-```
-  Interbank spread (EBS/Reuters):   0.1 – 0.3 pips
-  Tier 1 Bank to client:            0.3 – 1.0 pips
-  Multi-dealer platform:            0.5 – 2.0 pips
-  Retail broker (retail client):    1.0 – 3.0 pips
-```
+*   **Interbank spread (EBS/Reuters):** 0.1 – 0.3 pips
+*   **Tier 1 Bank to client:** 0.3 – 1.0 pips
+*   **Multi-dealer platform:** 0.5 – 2.0 pips
+*   **Retail broker (retail client):** 1.0 – 3.0 pips
 
 ---
 
@@ -87,96 +91,26 @@ Spot FX prices are formed through a **continuous two-sided auction** process acr
 
 **Cross rates** are currency pairs with no USD leg, derived from two USD pairs:
 
-```
-  EUR/GBP = EUR/USD ÷ GBP/USD
+$$
+\text{EUR/GBP} = \frac{\text{EUR/USD}}{\text{GBP/USD}}
+$$
 
-  Example:
-  EUR/USD = 1.0850
-  GBP/USD = 1.2700
-  EUR/GBP = 1.0850 / 1.2700 = 0.8543
-```
+**Example:**
+*   EUR/USD = 1.0850
+*   GBP/USD = 1.2700
+*   EUR/GBP = $1.0850 / 1.2700 = 0.8543$
 
-**Why it matters**: In thin EM crosses (e.g., EUR/ZAR), price is derived by crossing EUR/USD × USD/ZAR. Wider compounded spreads can result.
-
----
-
-## Value Dates & Settlement Conventions
-
-| Value Date | Name | Settlement |
-|---|---|---|
-| T+0 | Cash / Value Today (TOD) | Same day (rare, cutoff before NY close) |
-| T+1 | Value Tomorrow (TOM) | Next business day |
-| T+2 | Spot | Standard for most pairs |
-| T+1 | USD/CAD, USD/TRY | Special convention |
-
-> **Cutoff times** matter: JPY cutoff is ~14:00 Tokyo time; USD settles via Fedwire by 18:00 ET.
-
-### Settlement Infrastructure
-
-```
-  FX Settlement Flow:
-  ─────────────────────────────────────────────────────
-  Bank A (USD payer)                  Bank B (EUR payer)
-       │                                      │
-       ▼                                      ▼
-  Correspondent USD Bank          Correspondent EUR Bank
-       │                                      │
-       └──────────► SWIFT / CLS ◄─────────────┘
-                        │
-                   Simultaneous
-                   PvP Settlement
-                  (Payment vs Payment)
-```
-
-**CLS (Continuous Linked Settlement)**: A multi-currency settlement system used by major banks that eliminates **Herstatt risk** (settlement risk). CLS settles ~$6.5 trillion per day and covers 18 currencies.
+**Why it matters:** In thin EM crosses (e.g., EUR/ZAR), price is derived by crossing EUR/USD × USD/ZAR. Wider compounded spreads can result.
 
 ---
 
-## FX Fixing Rates
+## Key Terms Summary
 
-Key daily benchmark rates used for valuing portfolios, settling derivatives, and managing hedges:
-
-| Fix | Time | Publisher | Use |
-|---|---|---|---|
-| **WM/Reuters 4pm Fix** | 16:00 London | Refinitiv / LSEG | Fund valuations, index rebalancing |
-| **ECB Reference Rate** | ~14:15 CET | European Central Bank | EUR-based contracts |
-| **BFIX** | Multiple times | Bloomberg | Bloomberg terminal users |
-| **PBOC CNY Fix** | ~09:15 Beijing | People's Bank of China | USD/CNY reference |
-
-> **Fix hunting**: Large institutional order flows around the 4pm fix can create predictable intraday patterns — a well-known market microstructure phenomenon.
-
----
-
-## Spot FX Risk
-
-### Mark-to-Market P&L
-```
-  P&L = Notional × (Exit Rate − Entry Rate) × [±1 depending on direction]
-
-  Example:
-  Bought €10m at EUR/USD 1.0800
-  Current rate: 1.0900
-  P&L = €10m × (1.0900 − 1.0800) = +$100,000 USD
-```
-
-### Key Risks
-| Risk | Description |
+| Term | Meaning |
 |---|---|
-| **Market risk** | Exchange rate moves against position |
-| **Settlement risk** | Counterparty fails to deliver (mitigated by CLS) |
-| **Liquidity risk** | Inability to exit large position without moving market |
-| **Gap risk** | Sharp overnight or weekend moves (e.g., SNB CHF shock Jan 2015) |
-
----
-
-## Historical Case: SNB Shock (January 2015)
-
-On 15 January 2015, the Swiss National Bank (SNB) unexpectedly removed the EUR/CHF floor of 1.20, causing CHF to appreciate ~30% in minutes. EUR/CHF collapsed from ~1.20 to ~0.85 intraday — an extreme illustration of **gap risk** and the limits of stop-loss orders in illiquid, fast markets.
-
----
-
-## Further Reading
-
-- BIS Triennial Survey (2022) — [bis.org/statistics/rpfx22.htm](https://www.bis.org/statistics/rpfx22.htm)
-- *Foreign Exchange: A Practical Guide to the FX Markets* — Tim Weithers (Wiley, 2011)
-- CLS Bank — [cls-group.com](https://www.cls-group.com)
+| **Base Currency** | The first currency in a pair (e.g., EUR in EUR/USD) |
+| **Quote Currency** | The second currency in a pair (e.g., USD in EUR/USD) |
+| **Pip** | Smallest standard unit of price move (typically 0.0001) |
+| **Value Date** | The date on which the actual exchange of funds occurs |
+| **CLS (Continuous Linked Settlement)** | System that mitigates settlement risk in the FX market |
+| **Fixing** | Benchmark FX rate set at a specific time (e.g., WMR 4 PM Fix) |

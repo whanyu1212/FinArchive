@@ -15,27 +15,27 @@ Beyond vanilla options and standard exotics, the FX market features a range of *
 
 A **variance swap** is a forward contract on realised variance — allowing pure exposure to realised volatility without delta-hedging.
 
-```
-  Payoff = Notional_var × (σ²_realised − K²_var)
+$$
+\text{Payoff} = \text{Notional}_{\text{var}} \times (\sigma^2_{\text{realised}} - K^2_{\text{var}})
+$$
 
-  Where:
-  σ²_realised = annualised variance of daily log returns over life
-  K_var       = variance strike (agreed at inception)
-  Notional_var = vega notional / (2 × K_var)
+**Where:**
+*   $\sigma^2_{\text{realised}}$ = annualised variance of daily log returns over life
+*   $K_{\text{var}}$ = variance strike (agreed at inception)
+*   $\text{Notional}_{\text{var}} = \text{vega notional} / (2 \times K_{\text{var}})$
 
-  Example: EUR/USD 3M variance swap
-  Variance strike: 50 (= 7.07% vol²  × 100² conversion)
-  Vega notional:   USD 1,000,000
-  Var notional:    USD 1,000,000 / (2 × 7.07) = USD 70,722
+**Example:** EUR/USD 3M variance swap
+*   Variance strike: 50 ($= 7.07\% \text{ vol}^2 \times 100^2 \text{ conversion}$)
+*   Vega notional: USD 1,000,000
+*   Var notional: USD 1,000,000 / (2 × 7.07) = USD 70,722
 
-  If 3M realised var = 64 (= 8% realised vol²×100²):
-  P&L = 70,722 × (64 − 50) = +$990,108 (long variance wins)
+If 3M realised var = 64 ($= 8\% \text{ realised vol}^2 \times 100^2$):
+$\text{P\&L} = 70,722 \times (64 - 50) = +\$990,108$ (long variance wins)
 
-  Key:
-  → Long variance = profits if realised vol > strike
-  → Short variance = profits if realised vol < strike (selling the spike)
-  → No delta hedging required — pure vol exposure
-```
+**Key:**
+→ **Long variance** = profits if realised vol > strike
+→ **Short variance** = profits if realised vol < strike (selling the spike)
+→ No delta hedging required — pure vol exposure
 
 **Why variance over vol swaps?**
 Variance swaps are **statically replicable** via a strip of vanilla options (log contract), making pricing and hedging cleaner. Volatility swaps require dynamic vega hedging.
@@ -123,20 +123,21 @@ An option on a **weighted basket of currency pairs** — typically cheaper than 
 
 Pays based on the **best-performing** (or worst-performing) currency in a basket:
 
-```
-  Best-of Call: payoff = max(max(R_1, R_2, R_3) − K, 0)
-  Worst-of Call: payoff = max(min(R_1, R_2, R_3) − K, 0)
+$$
+\text{Best-of Call Payoff} = \max(\max(R_1, R_2, R_3) - K, 0)
+$$
+$$
+\text{Worst-of Call Payoff} = \max(\min(R_1, R_2, R_3) - K, 0)
+$$
 
-  → Best-of is expensive (upside = best performer)
-  → Worst-of is cheap (upside = capped by worst performer)
+→ **Best-of** is expensive (upside = best performer)
+→ **Worst-of** is cheap (upside = capped by worst performer)
 
-  Common structure: Worst-of digital (pays fixed amount only if ALL
-  currencies finish above their respective strikes)
+Common structure: **Worst-of digital** (pays fixed amount only if ALL currencies finish above their respective strikes)
 
-  Correlation sensitivity:
-  → Best-of:   Short correlation (benefits when assets diverge)
-  → Worst-of:  Long correlation (suffers when assets diverge)
-```
+**Correlation sensitivity:**
+*   **Best-of:** Short correlation (benefits when assets diverge)
+*   **Worst-of:** Long correlation (suffers when assets diverge)
 
 ---
 
@@ -144,18 +145,18 @@ Pays based on the **best-performing** (or worst-performing) currency in a basket
 
 Pays based on the **differential** between two FX rates:
 
-```
-  EUR/USD vs. GBP/USD spread option:
-  Payoff = max(EURUSD_T − GBPUSD_T − K, 0)
+**EUR/USD vs. GBP/USD spread option:**
+$$
+\text{Payoff} = \max(\text{EURUSD}_T - \text{GBPUSD}_T - K, 0)
+$$
+→ Used by cross-asset traders to express views on EUR/GBP (equivalent to an EUR/GBP option but structured differently)
+→ EUR/GBP spread options allow for precise optionality on cross rates
 
-  → Used by cross-asset traders to express views on EUR/GBP
-    (equivalent to an EUR/GBP option but structured differently)
-  → EUR/GBP spread options allow for precise optionality on cross rates
-
-  FX/Rate spread:
-  Payoff = max(USD/JPY_T − IR_differential_T − K, 0)
-  → Trades the relationship between USD/JPY and US-JP rate differential
-```
+**FX/Rate spread:**
+$$
+\text{Payoff} = \max(\text{USD/JPY}_T - \text{IR\_differential}_T - K, 0)
+$$
+→ Trades the relationship between USD/JPY and US-JP rate differential
 
 ---
 
@@ -163,17 +164,19 @@ Pays based on the **differential** between two FX rates:
 
 The payoff is based on the **optimal (best) spot rate** observed during the option's life:
 
-```
-  Floating strike lookback call:
-  Payoff = S_max − S_T  (best you could have sold vs. final spot)
+**Floating strike lookback call:**
+$$
+\text{Payoff} = S_{\max} - S_T \quad \text{(best you could have sold vs. final spot)}
+$$
 
-  Fixed strike lookback call:
-  Payoff = max(S_max − K, 0)
+**Fixed strike lookback call:**
+$$
+\text{Payoff} = \max(S_{\max} - K, 0)
+$$
 
-  → Very expensive (you effectively get the best possible entry)
-  → Used in very specific hedging where timing risk is a major concern
-  → Rarely traded due to cost; more commonly used as a benchmark
-```
+→ Very expensive (you effectively get the best possible entry)
+→ Used in very specific hedging where timing risk is a major concern
+→ Rarely traded due to cost; more commonly used as a benchmark
 
 ---
 
@@ -183,25 +186,18 @@ The payoff is based on the **optimal (best) spot rate** observed during the opti
 
 A forward where the **notional accrues** based on how many days the spot rate fixes within a corridor:
 
-```
-  EUR/USD 1Y Accrual Forward:
-  Strike: 1.0950
-  Corridor: EUR/USD 1.0700 – 1.1200
+**EUR/USD 1Y Accrual Forward:**
+*   **Strike:** 1.0950
+*   **Corridor:** EUR/USD 1.0700 – 1.1200
 
-  For each business day EUR/USD fixes within [1.07, 1.12]:
-  → +EUR 50,000 added to notional
+For each business day EUR/USD fixes within $[1.07, 1.12]$:
+→ $+\text{EUR } 50,000$ added to notional
 
-  At expiry:
-  Total notional = €50k × (days in corridor)
-  Settlement at strike 1.0950
-
-  → If spot stays in range: large notional hedge at good rate
-  → If spot breaks range: smaller or zero notional → less hedging
-```
-
-### Range Accrual Swap (FX)
-
-Extends the range accrual concept to a **swap structure** — one leg pays/receives a fixed rate, the other accrues based on days in range. Used to embed FX conditions into interest rate structures.
+**At expiry:**
+$$
+\text{Total notional} = €50\text{k} \times (\text{days in corridor})
+$$
+Settlement at strike 1.0950
 
 ---
 
@@ -211,25 +207,19 @@ Complex derivatives linking FX to other asset classes:
 
 ### FX-Linked Credit Notes
 
-```
-  Structure: Bond whose coupon is enhanced by FX performance
-  Example: 5Y note paying 8% p.a. if USD/BRL stays below 6.00
-           Otherwise coupon falls to 0%
+**Structure:** Bond whose coupon is enhanced by FX performance
+**Example:** 5Y note paying 8% p.a. if USD/BRL stays below 6.00, otherwise coupon falls to 0%
 
-  → Investor is long a credit note and short a USD/BRL call (barrier)
-  → Enhanced yield = option premium received
-```
+→ Investor is long a credit note and short a USD/BRL call (barrier)
+→ $\text{Enhanced yield} = \text{option premium received}$
 
 ### FX-Linked Rate Structures (CMS Steepener with FX Knock-Out)
 
-```
-  Structure: EUR interest rate CMS steepener note,
-             but knocked out if EUR/USD falls below 1.0000
+**Structure:** EUR interest rate CMS steepener note, but knocked out if EUR/USD falls below 1.0000
 
-  → Links EUR interest rate view to EUR/USD tail risk
-  → Cheaper than a pure rate note (you sell the EUR put for funding)
-  → Correlation between EUR rates and EUR/USD makes this complex to price
-```
+→ Links EUR interest rate view to EUR/USD tail risk
+→ Cheaper than a pure rate note (you sell the EUR put for funding)
+→ Correlation between EUR rates and EUR/USD makes this complex to price
 
 ---
 

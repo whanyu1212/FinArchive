@@ -5,6 +5,8 @@ sidebar:
   order: 10
 ---
 
+import Chart from '../../../components/Chart.astro';
+
 The **volatility surface** is a three-dimensional mapping of implied volatility across all strikes and maturities for a given currency pair. Understanding its construction and dynamics is a prerequisite for pricing any exotic FX option or managing a book of vanilla options.
 
 ---
@@ -39,34 +41,56 @@ Black-Scholes assumes **constant volatility** across all strikes — reality dis
 
 ## The Volatility Smile vs. Skew
 
-```
-  SYMMETRIC SMILE (FX majors, short-dated):
-  Implied vol
-    │     ╲       /
-    │      ╲     /   (wings are more expensive than ATM)
-    │       ╲   /
-    │        ╲ /
-    │─────────────── Strike (delta)
-    25D put  ATM  25D call
+<div style="margin: 2rem 0;">
+  <Chart id="smile-vs-skew" config={{
+    type: 'line',
+    data: {
+      labels: ['10D Put', '25D Put', 'ATM', '25D Call', '10D Call'],
+      datasets: [
+        {
+          label: 'Symmetric Smile (FX Majors)',
+          data: [12.5, 10.5, 8.5, 10.5, 12.5],
+          borderColor: 'rgba(54, 162, 235, 1)',
+          backgroundColor: 'rgba(54, 162, 235, 0.1)',
+          tension: 0.4,
+          fill: false,
+          borderWidth: 2
+        },
+        {
+          label: 'Skewed Smile / Put Skew (USD/EM)',
+          data: [15.0, 12.0, 9.0, 8.2, 8.5],
+          borderColor: 'rgba(255, 99, 132, 1)',
+          backgroundColor: 'rgba(255, 99, 132, 0.1)',
+          tension: 0.4,
+          fill: false,
+          borderWidth: 2,
+          borderDash: [5, 5]
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: { title: { display: true, text: 'Implied Volatility (%)' } },
+        x: { title: { display: true, text: 'Strike (Delta)' } }
+      },
+      plugins: {
+        legend: { position: 'bottom' }
+      }
+    }
+  }} />
+</div>
 
-  SKEWED SMILE (USD/EM pairs, equities):
-  Implied vol
-    │ ╲
-    │  ╲
-    │   ╲__________  (put wing expensive, call wing cheap)
-    │─────────────── Strike
-    25D put  ATM  25D call
+- **PUT SKEW (Negative): Vol(25D put) > Vol(25D call)**
+  - Market fears downside more than upside.
+  - Classic in USD/EM pairs (EM currency depreciation fear).
+  - Also seen in EUR/USD (flight-to-quality USD bids).
 
-  PUT SKEW (negative): Vol(25D put) > Vol(25D call)
-    → Market fears downside more than upside
-    → Classic in USD/EM pairs (EM currency depreciation fear)
-    → Also in EUR/USD (flight-to-quality USD bids)
-
-  CALL SKEW (positive): Vol(25D call) > Vol(25D put)
-    → Market fears upside more than downside
-    → Classic in USD/JPY when BoJ is intervening
-    → Agricultural commodities (supply-shock fear on upside)
-```
+- **CALL SKEW (Positive): Vol(25D call) > Vol(25D put)**
+  - Market fears upside more than downside.
+  - Classic in USD/JPY when the BoJ is intervening.
+  - Agricultural commodities (supply-shock fear on upside).
 
 ### Why USD/EM Pairs Have Persistent Put Skew
 
@@ -214,36 +238,70 @@ FX options have **multiple competing delta conventions** — a significant sourc
 
 The **vol term structure** plots ATM implied vol against maturity. Like the yield curve, it has distinct shapes:
 
-```
-  CONTANGO (normal, upward-sloping):
-  Implied vol
-    │                    /
-    │               /───/
-    │          /───/
-    │     /───/
-    │────/
-    └──────────────────────────────── Maturity
-       1W  1M  3M  6M  1Y  2Y
-
-  → Near-term vol < long-term vol
-  → Normal state: uncertainty accumulates over time
-  → Implied by options: long-dated options more expensive
-
-  BACKWARDATION (inverted, event-risk):
-  Implied vol
-    │────╲
-    │     ╲────╲
-    │          ╲────╲
-    │               ╲────╲
-    └──────────────────────── Maturity
-       1W  1M  3M  6M  1Y
-
-  → Near-term vol > long-term vol
-  → CLASSIC SIGNAL: high-impact event risk in the near term
-    (e.g., central bank meeting, election, data release)
-  → The near-term options price in the event jump risk
-  → Post-event: vol collapses back to normal ("vol crush")
-```
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+  <div>
+    <h4 style="text-align: center; margin-bottom: 0.5rem;">CONTANGO (Normal)</h4>
+    <Chart id="vol-contango" config={{
+      type: 'line',
+      data: {
+        labels: ['1W', '1M', '3M', '6M', '1Y', '2Y'],
+        datasets: [{
+          label: 'Implied Volatility',
+          data: [6.0, 7.0, 7.5, 8.0, 8.5, 9.0],
+          borderColor: 'rgba(54, 162, 235, 1)',
+          backgroundColor: 'rgba(54, 162, 235, 0.1)',
+          fill: true,
+          tension: 0.4,
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { title: { display: true, text: 'Implied Vol (%)' } },
+          x: { title: { display: true, text: 'Maturity' } }
+        },
+        plugins: { legend: { display: false } }
+      }
+    }} />
+    <p style="font-size: 0.85em; margin-top: 0.5rem;">
+      → <strong>Near-term vol < long-term vol</strong><br/>
+      → Normal state: uncertainty accumulates over time<br/>
+      → Implied by options: long-dated options more expensive
+    </p>
+  </div>
+  <div>
+    <h4 style="text-align: center; margin-bottom: 0.5rem;">BACKWARDATION (Inverted)</h4>
+    <Chart id="vol-backwardation" config={{
+      type: 'line',
+      data: {
+        labels: ['1W', '1M', '3M', '6M', '1Y', '2Y'],
+        datasets: [{
+          label: 'Implied Volatility',
+          data: [12.0, 10.0, 8.5, 8.0, 7.8, 7.5],
+          borderColor: 'rgba(255, 99, 132, 1)',
+          backgroundColor: 'rgba(255, 99, 132, 0.1)',
+          fill: true,
+          tension: 0.4,
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { title: { display: true, text: 'Implied Vol (%)' } },
+          x: { title: { display: true, text: 'Maturity' } }
+        },
+        plugins: { legend: { display: false } }
+      }
+    }} />
+    <p style="font-size: 0.85em; margin-top: 0.5rem;">
+      → <strong>Near-term vol > long-term vol</strong><br/>
+      → CLASSIC SIGNAL: high-impact event risk in the near term<br/>
+      → Post-event: vol collapses back to normal ("vol crush")
+    </p>
+  </div>
+</div>
 
 ### Event Bumps in the Vol Surface
 

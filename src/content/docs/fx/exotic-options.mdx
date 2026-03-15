@@ -5,6 +5,8 @@ sidebar:
   order: 7
 ---
 
+import Chart from '../../../components/Chart.astro';
+
 **Exotic options** are OTC options with non-standard payoff structures that differ from plain vanilla calls and puts. They are most prevalent in the FX market and exist because they allow more precise — and cheaper — hedging of specific exposures or speculative views than vanilla options.
 
 > "Exotic options exist because vanilla options often provide more coverage than a hedger actually needs — and that unnecessary optionality costs money."
@@ -126,14 +128,38 @@ A **digital option** pays a **fixed predetermined amount** (or nothing) dependin
   EUR/USD digital call (cash-or-nothing):
   Condition: EUR/USD > 1.1000 at expiry
   Payout: $1,000,000 (fixed)
-
-  P&L profile:
-  Payout │            ──────────────
-         │
-       0 │────────────
-         └────────────────── EUR/USD spot at expiry
-                          1.10
 ```
+
+<Chart id="digital-call" config={{
+  type: 'line',
+  data: {
+    labels: ['1.06', '1.07', '1.08', '1.09', '1.10', '1.11', '1.12', '1.13', '1.14'],
+    datasets: [{
+      label: 'Digital Call Payout ($1M)',
+      data: [0, 0, 0, 0, 1, 1, 1, 1, 1],
+      stepped: 'before',
+      borderColor: 'rgba(54, 162, 235, 1)',
+      backgroundColor: 'rgba(54, 162, 235, 0.2)',
+      fill: true,
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: { 
+        title: { display: true, text: 'Payout (Millions)' }, 
+        beginAtZero: true,
+        max: 1.2
+      },
+      x: { title: { display: true, text: 'EUR/USD Spot at Expiry' } }
+    },
+    plugins: {
+      legend: { display: false }
+    }
+  }
+}} />
 
 ### One-Touch
 

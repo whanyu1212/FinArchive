@@ -1,13 +1,24 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import mermaid from 'astro-mermaid';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://whanyu1212.github.io',
 	base: '/FinArchive',
+	markdown: {
+		remarkPlugins: [remarkMath],
+		rehypePlugins: [rehypeKatex],
+	},
 	integrations: [
+		mermaid(),
 		starlight({
+			customCss: [
+				'katex/dist/katex.min.css'
+			],
 			title: 'FinArchive',
 			description: 'A curated financial knowledge base covering FX, commodities, macro, and technical analysis.',
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],

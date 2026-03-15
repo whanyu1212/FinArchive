@@ -13,23 +13,39 @@ The foreign exchange (FX) market is the largest and most liquid financial market
 
 Unlike equities or futures, FX trades **over-the-counter (OTC)** — bilaterally between counterparties rather than on a centralised exchange. This creates a decentralised, dealer-driven market.
 
-```
-               ┌─────────────────────────────────────┐
-               │        INTERBANK MARKET              │
-               │  (EBS, Reuters, voice brokers)       │
-               └──────┬──────────────────┬────────────┘
-                      │                  │
-           ┌──────────▼──────┐  ┌────────▼──────────┐
-           │   Market Makers  │  │   Market Makers   │
-           │   (Tier 1 Banks) │  │   (Tier 1 Banks)  │
-           └──────────┬──────┘  └────────┬───────────┘
-                      │                  │
-      ┌───────────────┼──────────────────┼───────────────┐
-      │               │                  │               │
- ┌────▼────┐   ┌──────▼──────┐  ┌───────▼───────┐  ┌───▼─────┐
- │ Hedge   │   │ Corporates  │  │  Asset Mgrs   │  │ Retail  │
- │  Funds  │   │             │  │  / Pensions   │  │  / HNW  │
- └─────────┘   └─────────────┘  └───────────────┘  └─────────┘
+```mermaid
+flowchart TD
+    A[<b>INTERBANK MARKET</b><br>EBS, Reuters, voice brokers]
+
+    B[<b>Market Makers</b><br>Tier 1 Banks]
+    C[<b>Market Makers</b><br>Tier 1 Banks]
+
+    A <--> B
+    A <--> C
+    B <--> C
+
+    D[Hedge Funds]
+    E[Corporates]
+    F[Asset Mgrs / Pensions]
+    G[Retail / HNW]
+
+    B --> D
+    B --> E
+    B --> F
+    B --> G
+    
+    C --> D
+    C --> E
+    C --> F
+    C --> G
+
+    classDef top fill:#e1f5fe,stroke:#333,stroke-width:2px;
+    classDef middle fill:#fff3e0,stroke:#333,stroke-width:2px;
+    classDef bottom fill:#f3e5f5,stroke:#333,stroke-width:1px;
+
+    class A top;
+    class B,C middle;
+    class D,E,F,G bottom;
 ```
 
 ---
@@ -51,16 +67,32 @@ Unlike equities or futures, FX trades **over-the-counter (OTC)** — bilaterally
 
 FX trading is global and continuous. Liquidity peaks when sessions overlap.
 
-```
-  Time (UTC):  00   02   04   06   08   10   12   14   16   18   20   22   24
-               │────│────│────│────│────│────│────│────│────│────│────│────│
-  Sydney:      ████████████                                          ██████
-  Tokyo:       ████████████████
-  London:                        ████████████████████████
-  New York:                                 ████████████████████████
+<div style="overflow-x: auto; padding: 1rem 0;">
+  <div style="min-width: 700px;">
 
-  Peak Overlap (London + NY):          ────────────┤13:00–17:00 UTC├────────
+```mermaid
+%%{init: { 'gantt': { 'barHeight': 35, 'fontSize': 16 } } }%%
+gantt
+    title Global FX Market Sessions (UTC)
+    dateFormat  HH:mm
+    axisFormat  %H:%M
+    
+    section APAC
+    Sydney (22:00-07:00) :a1, 22:00, 9h
+    Tokyo (23:00-08:00)  :a2, 23:00, 9h
+    
+    section Europe
+    London (07:00-16:00) :a3, 07:00, 9h
+    
+    section Americas
+    New York (13:00-22:00) :a4, 13:00, 9h
+    
+    section Peak Liquidity
+    London / NY Overlap :crit, a5, 13:00, 3h
 ```
+
+  </div>
+</div>
 
 - **Most liquid pair**: EUR/USD (~24% of global volume)
 - **Most liquid session**: London (accounts for ~38% of global volume)

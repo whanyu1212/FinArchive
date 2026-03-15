@@ -1,0 +1,47 @@
+---
+export interface Props {
+  id: string;
+  config: any;
+}
+
+const { id, config } = Astro.props;
+---
+
+<chart-component data-config={JSON.stringify(config)}>
+  <div style="position: relative; width: 100%; height: 350px;">
+    <canvas id={id}></canvas>
+  </div>
+</chart-component>
+
+<script>
+  import Chart from 'chart.js/auto';
+
+  class ChartComponent extends HTMLElement {
+    connectedCallback() {
+      const canvas = this.querySelector('canvas');
+      if (!canvas) return;
+      
+      const configStr = this.dataset.config;
+      if (!configStr) return;
+
+      const config = JSON.parse(configStr);
+      
+      // Destroy existing chart if it exists (handles hot-module reloading and view transitions)
+      if ((canvas as any).chartInstance) {
+        (canvas as any).chartInstance.destroy();
+      }
+
+      // Automatically adjust text colors for dark mode if Starlight is using dark mode
+      // Chart.js uses standard canvas rendering, so setting color to 'gray' or inheriting helps
+      Chart.defaults.color = 'rgb(156, 163, 175)';
+      Chart.defaults.borderColor = 'rgba(156, 163, 175, 0.2)';
+
+      const chart = new Chart(canvas, config);
+      (canvas as any).chartInstance = chart;
+    }
+  }
+
+  if (!customElements.get('chart-component')) {
+    customElements.define('chart-component', ChartComponent);
+  }
+</script>

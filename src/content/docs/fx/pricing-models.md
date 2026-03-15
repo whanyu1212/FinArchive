@@ -116,25 +116,27 @@ Instead of pricing backwards from expiry (backward PDE), Dupire derived a **forw
 
 ### The Heston Model Equations
 
-```
-  Asset process:
-  dS = (r_d − r_f)·S·dt + √V·S·dW₁
+**Asset process:**
+$$
+dS = (r_d - r_f) S \, dt + \sqrt{V} S \, dW_1
+$$
 
-  Variance process (mean-reverting):
-  dV = κ(θ − V)dt + ξ·√V·dW₂
+**Variance process (mean-reverting):**
+$$
+dV = \kappa(\theta - V) dt + \xi \sqrt{V} \, dW_2
+$$
 
-  Correlation:
-  dW₁·dW₂ = ρ·dt
+**Correlation:**
+$$
+dW_1 \cdot dW_2 = \rho \, dt
+$$
 
-  Parameters:
-  ─────────────────────────────────────────────────────────
-  κ  = mean reversion speed (how fast vol returns to θ)
-  θ  = long-term variance (long-run average vol²)
-  ξ  = volatility of volatility ("vol of vol")
-  ρ  = correlation between spot and vol processes
-  V₀ = initial variance (current instantaneous vol²)
-  ─────────────────────────────────────────────────────────
-```
+**Parameters:**
+*   $\kappa$ = mean reversion speed (how fast vol returns to $\theta$)
+*   $\theta$ = long-term variance (long-run average $\text{vol}^2$)
+*   $\xi$ = volatility of volatility ("vol of vol")
+*   $\rho$ = correlation between spot and vol processes
+*   $V_0$ = initial variance (current instantaneous $\text{vol}^2$)
 
 > Reference: Heston, S.L. (1993). *A Closed-Form Solution for Options with Stochastic Volatility.* Review of Financial Studies, 6(2), 327–343.
 
@@ -264,24 +266,28 @@ The **SABR model** (Hagan et al., 2002) is widely used for interest rate and FX 
 1. An **analytic approximation** for implied vol (no need for Fourier methods)
 2. Natural fit to market-observed vol smiles
 
-```
-  SABR dynamics:
-  dF = α·F^β·dW₁
-  dα = ν·α·dW₂
-  dW₁·dW₂ = ρ·dt
+**SABR dynamics:**
+$$
+dF = \alpha \cdot F^\beta \cdot dW_1
+$$
+$$
+d\alpha = \nu \cdot \alpha \cdot dW_2
+$$
+$$
+dW_1 \cdot dW_2 = \rho \, dt
+$$
 
-  Parameters:
-  α = initial volatility
-  β = CEV parameter (0 = normal, 1 = log-normal)
-  ρ = correlation (skew driver)
-  ν = vol of vol (smile curvature driver)
+**Parameters:**
+*   $\alpha$ = initial volatility
+*   $\beta$ = CEV parameter (0 = normal, 1 = log-normal)
+*   $\rho$ = correlation (skew driver)
+*   $\nu$ = vol of vol (smile curvature driver)
 
-  SABR implied vol approximation (Hagan 2002):
-  σ(K) ≈ analytic formula in terms of (α, β, ρ, ν, F, K, T)
+**SABR implied vol approximation (Hagan 2002):**
+$\sigma(K) \approx \text{analytic formula in terms of } (\alpha, \beta, \rho, \nu, F, K, T)$
 
-  → Standard in interest rate derivatives desks
-  → Used in FX for longer-dated options and emerging markets
-```
+→ Standard in interest rate derivatives desks
+→ Used in FX for longer-dated options and emerging markets
 
 ---
 

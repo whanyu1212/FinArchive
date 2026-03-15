@@ -1,0 +1,339 @@
+---
+title: Vanilla FX Options
+description: Pricing, Greeks, and market conventions for plain vanilla OTC FX options using the Garman-Kohlhagen model.
+sidebar:
+  order: 6
+---
+
+import Chart from '../../../components/Chart.astro';
+
+A **vanilla FX option** gives the buyer the **right, but not the obligation**, to buy (call) or sell (put) a currency pair at a specified **strike rate** on or before an **expiry date**. Unlike forwards, options require paying an upfront **premium** for this asymmetric payoff.
+
+---
+
+## Call vs. Put
+
+| Option | Right | Exercise if... |
+|---|---|---|
+| **Call** | Buy base / sell quote at strike | Spot > Strike (ITM for call buyer) |
+| **Put** | Sell base / buy quote at strike | Spot < Strike (ITM for put buyer) |
+
+### Payoff Diagrams
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+  <div>
+    <h4 style="text-align: center; margin-bottom: 0.5rem;">LONG CALL (EUR/USD 1.0900)</h4>
+    <Chart id="long-call" config={{
+      type: 'line',
+      data: {
+        labels: ['1.05', '1.06', '1.07', '1.08', '1.09', '1.10', '1.11', '1.12', '1.13'],
+        datasets: [{
+          label: 'P&L',
+          data: [-100, -100, -100, -100, -100, 0, 100, 200, 300],
+          borderColor: 'rgba(76, 175, 80, 1)',
+          backgroundColor: 'rgba(76, 175, 80, 0.1)',
+          fill: true,
+          tension: 0,
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { title: { display: true, text: 'Profit / Loss (Pips)' } },
+          x: { title: { display: true, text: 'Spot at Expiry' } }
+        },
+        plugins: { legend: { display: false } }
+      }
+    }} />
+    <p style="text-align: center; font-size: 0.85em; margin-top: 0.5rem;"><strong>Max loss:</strong> Premium paid<br/><strong>Max gain:</strong> Unlimited</p>
+  </div>
+  <div>
+    <h4 style="text-align: center; margin-bottom: 0.5rem;">LONG PUT (EUR/USD 1.0800)</h4>
+    <Chart id="long-put" config={{
+      type: 'line',
+      data: {
+        labels: ['1.04', '1.05', '1.06', '1.07', '1.08', '1.09', '1.10', '1.11', '1.12'],
+        datasets: [{
+          label: 'P&L',
+          data: [300, 200, 100, 0, -100, -100, -100, -100, -100],
+          borderColor: 'rgba(244, 67, 54, 1)',
+          backgroundColor: 'rgba(244, 67, 54, 0.1)',
+          fill: true,
+          tension: 0,
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { title: { display: true, text: 'Profit / Loss (Pips)' } },
+          x: { title: { display: true, text: 'Spot at Expiry' } }
+        },
+        plugins: { legend: { display: false } }
+      }
+    }} />
+    <p style="text-align: center; font-size: 0.85em; margin-top: 0.5rem;"><strong>Max loss:</strong> Premium paid<br/><strong>Max gain:</strong> Strike − 0</p>
+  </div>
+</div>
+
+---
+
+## Moneyness
+
+| Term | Call | Put |
+|---|---|---|
+| **In the Money (ITM)** | Spot > Strike | Spot < Strike |
+| **At the Money (ATM)** | Spot ≈ Strike | Spot ≈ Strike |
+| **Out of the Money (OTM)** | Spot < Strike | Spot > Strike |
+
+> **ATM-forward (ATMF)**: In FX markets, ATM is typically defined as the strike equal to the **forward rate** (not spot), since the forward reflects the true cost-neutral entry point.
+
+---
+
+## Garman-Kohlhagen Pricing Model
+
+The **Garman-Kohlhagen (1983)** model is the FX extension of Black-Scholes-Merton, treating the foreign interest rate as a **continuous dividend yield** on the underlying currency.
+
+### Formulas
+
+$$
+c = S \cdot e^{-r_f T} \cdot N(d_1) - K \cdot e^{-r_d T} \cdot N(d_2)
+$$
+$$
+p = K \cdot e^{-r_d T} \cdot N(-d_2) - S \cdot e^{-r_f T} \cdot N(-d_1)
+$$
+
+Where:
+$$
+d_1 = \frac{\ln(S/K) + (r_d - r_f + \sigma^2/2)T}{\sigma \sqrt{T}}
+$$
+$$
+d_2 = d_1 - \sigma \sqrt{T}
+$$
+
+*   $S$ = Current spot rate
+*   $K$ = Strike rate
+*   $r_d$ = Domestic (quote currency) risk-free rate
+*   $r_f$ = Foreign (base currency) risk-free rate
+*   $\sigma$ = Implied volatility (annualised)
+*   $T$ = Time to expiry (in years)
+*   $N(\cdot)$ = Cumulative standard normal distribution
+
+> **Reference**: Garman, M.B. & Kohlhagen, S.W. (1983). *Foreign Currency Option Values*. Journal of International Money and Finance, 2(3), 231–237.
+
+---
+
+## The Greeks
+
+Greeks measure option sensitivity to changes in market variables. They are essential for **risk management and delta hedging**.
+
+### Delta ($\Delta$) — Sensitivity to Spot
+
+$$
+\Delta_{call} = e^{-r_f T} \cdot N(d_1) \quad [0 \text{ to } +1]
+$$
+$$
+\Delta_{put} = e^{-r_f T} \cdot (N(d_1) - 1) \quad [-1 \text{ to } 0]
+$$
+
+Interpretation:
+A EUR/USD call with $\Delta = 0.50$ means:
+→ Option price rises by $0.50 per $1 move in EUR/USD notional
+→ Hedging requires selling 0.50 × notional EUR spot
+
+**Delta ranges:**
+*   Deep ITM call: $\Delta \approx 1.0$
+*   ATM call: $\Delta \approx 0.50$
+*   Deep OTM call: $\Delta \approx 0.0$
+
+### Gamma ($\Gamma$) — Rate of Change of Delta
+
+$$
+\Gamma = \frac{e^{-r_f T} \cdot N'(d_1)}{S \cdot \sigma \sqrt{T}}
+$$
+*(Same for calls and puts)*
+
+→ Highest at ATM, declines as option moves ITM or OTM
+→ Highest for short-dated options (accelerating delta near expiry)
+
+$$
+\text{Gamma P\&L} \approx \frac{1}{2} \cdot \Gamma \cdot (\Delta S)^2
+$$
+*   **Long gamma:** profits from large moves (convexity)
+*   **Short gamma:** bleeds from time decay, profits from small moves
+
+### Vega ($\nu$) — Sensitivity to Volatility
+
+$$
+\nu = S \cdot e^{-r_f T} \cdot N'(d_1) \sqrt{T}
+$$
+*(Same for calls and puts — both long options have positive vega)*
+
+→ A 1% increase in implied vol increases option value by $\nu$
+→ Vega is highest for ATM, longer-dated options
+→ Long option = long vega (benefits from rising volatility)
+→ Short option = short vega (suffers from rising volatility)
+
+### Theta ($\Theta$) — Time Decay
+
+→ Measures daily P&L erosion from passage of time
+→ Long options lose value daily (negative theta)
+→ Theta accelerates as expiry approaches (especially for ATM options)
+
+**Theta-Gamma relationship (fundamental tension):**
+*   **Long gamma + negative theta:** pay to be convex
+*   **Short gamma + positive theta:** get paid but bleed on large spot moves
+
+### Rho ($\rho$) — Sensitivity to Interest Rates
+
+*   $\rho_d$ (domestic rate): Call > 0, Put < 0
+*   $\rho_f$ (foreign rate): Call < 0, Put > 0
+*(Less impactful for short-dated options)*
+
+---
+
+## Greeks Summary Table
+
+| Greek | Measures | Call | Put | Highest When |
+|---|---|---|---|---|
+| **Δ (Delta)** | Spot sensitivity | 0 to +1 | −1 to 0 | Deep ITM |
+| **Γ (Gamma)** | Delta convexity | Always + | Always + | ATM, short-dated |
+| **ν (Vega)** | Vol sensitivity | Always + | Always + | ATM, long-dated |
+| **Θ (Theta)** | Time decay | Usually − | Usually − | ATM, short-dated |
+| **ρ (Rho_d)** | Domestic rate | + | − | Long-dated |
+| **ρ_f (Rho_f)** | Foreign rate | − | + | Long-dated |
+
+---
+
+## FX Option Market Conventions
+
+### Quoting in Volatility
+FX options are quoted in **implied volatility (IV)**, not in price. IV is then plugged into Garman-Kohlhagen to compute the premium.
+
+```
+  EUR/USD 1M ATM implied vol: 7.50%
+  → Input into G-K model → premium in USD pips or % of notional
+```
+
+### Delta Conventions
+FX options commonly use **delta-based strikes** rather than absolute strikes:
+- **25-delta call** = call with delta of 0.25 (OTM)
+- **25-delta put** = put with delta of −0.25 (OTM)
+- **ATM-forward** = strike set at forward rate
+
+### Premium Quoting
+Depending on currency pair:
+- USD/JPY: premium in USD pips per JPY notional
+- EUR/USD: premium as % of EUR notional
+- Some pairs: "premium included" delta (where premium is factored into delta)
+
+---
+
+## The Volatility Surface
+
+In practice, implied vol is **not flat** across strikes and tenors — it forms a **3D surface**.
+
+### Volatility Smile / Skew
+
+<Chart id="vol-smile" config={{
+  type: 'line',
+  data: {
+    labels: ['10D Put', '25D Put', 'ATM', '25D Call', '10D Call'],
+    datasets: [
+      {
+        label: 'Symmetric Smile',
+        data: [12, 10.5, 9, 10.5, 12],
+        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: 'rgba(54, 162, 235, 0.1)',
+        tension: 0.4,
+        fill: false,
+        borderWidth: 2
+      },
+      {
+        label: 'Negative Skew (Put Skew)',
+        data: [15, 12.5, 10, 9.5, 9.2],
+        borderColor: 'rgba(255, 152, 0, 1)',
+        backgroundColor: 'rgba(255, 152, 0, 0.1)',
+        tension: 0.4,
+        fill: false,
+        borderWidth: 2,
+        borderDash: [5, 5]
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      y: { title: { display: true, text: 'Implied Volatility (%)' } },
+      x: { title: { display: true, text: 'Strike (Delta)' } }
+    }
+  }
+}} />
+
+### Key Vol Surface Metrics
+
+| Metric | Meaning | Formula |
+|---|---|---|
+| **ATM vol** | Baseline level of volatility | — |
+| **Risk Reversal (RR)** | Skew: asymmetry between calls and puts | Vol(25D call) − Vol(25D put) |
+| **Butterfly (BF / Strangle)** | Wings: how much OTM options cost vs. ATM | ½[Vol(25D call) + Vol(25D put)] − ATM vol |
+
+**Positive RR** (25D call vol > 25D put vol) = call skew = market fears upside (base currency rallying)
+
+**Negative RR** = put skew = market fears downside (base currency falling) — common in USD/EM, where USD is the "fear" currency
+
+---
+
+## Put-Call Parity
+
+A fundamental no-arbitrage relationship:
+
+```
+  c − p = e^(−r_f·T) · S − e^(−r_d·T) · K
+
+  Where c = call price, p = put price with same K and T
+
+  → Ensures no-arbitrage between calls, puts, forwards
+  → If violated, risk-free arbitrage exists
+```
+
+---
+
+## Key Option Strategies
+
+### 1. EUR/USD Collar (Corporates)
+Hedge downside (buy put) while capping upside cost (sell call):
+```
+  Exporter long EUR:
+  Buys 3M EUR/USD 1.0800 put (floor)
+  Sells 3M EUR/USD 1.1000 call (cap)
+  Net premium: reduced (or zero-cost collar)
+```
+
+### 2. Risk Reversal (Speculative)
+Buy call, sell put (or vice versa) — directional bet with no net premium:
+```
+  Bull view on EUR:
+  Buy EUR/USD 25D call + Sell EUR/USD 25D put
+  Net premium ≈ 0 (if vols balanced)
+```
+
+### 3. Straddle (Vol Play)
+Buy ATM call + ATM put — profits from large moves in either direction:
+```
+  Long EUR/USD ATM straddle:
+  Buy 1M ATM call + Buy 1M ATM put
+  Profit if spot moves significantly in either direction
+  Loss = both premiums if spot stays still
+```
+
+---
+
+## Further Reading
+
+- Garman, M.B. & Kohlhagen, S.W. (1983). *Foreign Currency Option Values*. Journal of International Money and Finance.
+- *FX Options and Structured Products* — Uwe Wystup (Wiley, 2006)
+- *Options, Futures, and Other Derivatives* — John C. Hull, Chapters 17–19
+- Global Risk Guard: *Currency Option Pricing* — [globalriskguard.com](https://www.globalriskguard.com/resources/deriv/currency_option.pdf)
+- MathFinance: *Foreign Exchange Options* — [mathfinance.com](https://www.mathfinance.com/wp-content/uploads/2024/10/EQF-FX-ForeignExchangeOptions-CekanWendelWystup.pdf)
