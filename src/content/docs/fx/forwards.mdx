@@ -42,19 +42,15 @@ $$
 
 ### Numerical Example
 
-```
-  EUR/USD spot:      1.0850
-  USD interest rate: 5.30% (r_d)
-  EUR interest rate: 3.75% (r_f)
-  Tenor:             3 months (T = 0.25)
+Given: $S = 1.0850$, $r_d = 5.30\%$, $r_f = 3.75\%$, $T = 0.25$
 
-  F = 1.0850 × (1 + 0.0530 × 0.25) / (1 + 0.0375 × 0.25)
-    = 1.0850 × 1.01325 / 1.009375
-    = 1.0850 × 1.003836
-    = 1.0892
-
-  Forward rate: EUR/USD 1.0892
-```
+$$
+\begin{align}
+F &= 1.0850 \times \frac{1 + 0.0530 \times 0.25}{1 + 0.0375 \times 0.25} \\[6pt]
+  &= 1.0850 \times \frac{1.01325}{1.009375} \\[6pt]
+  &= \mathbf{1.0892}
+\end{align}
+$$
 
 EUR/USD trades at a **forward premium** for USD (USD interest rates are higher), meaning the forward EUR/USD rate is higher than spot — you get more USD per EUR at the forward date.
 

@@ -15,21 +15,23 @@ Developed by J. Welles Wilder (1978), the **RSI** is a momentum oscillator that 
 
 ### Formula
 
-```
-  RSI = 100 − [100 / (1 + RS)]
+$$RS = \frac{\text{Average Gain over } N \text{ periods}}{\text{Average Loss over } N \text{ periods}}$$
 
-  Where: RS = Average Gain over N periods / Average Loss over N periods
-  Default period: N = 14
+$$RSI = 100 - \frac{100}{1 + RS}$$
 
-  Step 1: Calculate average gain and loss over 14 periods
-  Step 2: RS = Avg Gain / Avg Loss
-  Step 3: RSI = 100 − (100 / (1 + RS))
+Default period: $N = 14$. Steps: (1) calculate average gain and loss over 14 periods, (2) $RS = \text{Avg Gain} / \text{Avg Loss}$, (3) $RSI = 100 - \frac{100}{1 + RS}$.
 
-  Example:
-  Last 14 days: 8 up days (avg +0.50%), 6 down days (avg −0.40%)
-  RS  = 0.50 / 0.40 = 1.25
-  RSI = 100 − (100 / (1 + 1.25)) = 100 − 44.4 = 55.6
-```
+Given: last 14 days have 8 up days (avg $+0.50\%$) and 6 down days (avg $-0.40\%$)
+
+$$
+\begin{align}
+RS &= \frac{0.50}{0.40} = 1.25 \\[6pt]
+RSI &= 100 - \frac{100}{1 + 1.25} \\[6pt]
+  &= 100 - \frac{100}{2.25} \\[6pt]
+  &= 100 - 44.4 \\[6pt]
+  &= \mathbf{55.6}
+\end{align}
+$$
 
 ### Reading RSI
 
@@ -95,11 +97,13 @@ Developed by Gerald Appel (1979). **MACD** is a trend-following momentum indicat
 
 ### Formula
 
-```
-  MACD Line   = EMA(12) − EMA(26)
-  Signal Line = EMA(9) of MACD Line
-  Histogram   = MACD Line − Signal Line
+$$\text{MACD Line} = \text{EMA}(12) - \text{EMA}(26)$$
 
+$$\text{Signal Line} = \text{EMA}(9) \text{ of MACD Line}$$
+
+$$\text{Histogram} = \text{MACD Line} - \text{Signal Line}$$
+
+```
   Default settings: 12, 26, 9
 
   Interpretation of components:
@@ -177,12 +181,11 @@ Developed by George Lane. Compares a closing price to its price range over N per
 
 ### Formula
 
+$$\%K = 100 \times \frac{\text{Close} - \text{Lowest Low}_N}{\text{Highest High}_N - \text{Lowest Low}_N}$$
+
+$$\%D = \text{3-period SMA of } \%K$$
+
 ```
-  %K = 100 × (Close − Lowest Low over N periods)
-             / (Highest High − Lowest Low over N periods)
-
-  %D = 3-period SMA of %K (signal line)
-
   Default: N = 14 periods
 
   Interpretation:
@@ -218,12 +221,11 @@ Developed by George Lane. Compares a closing price to its price range over N per
 
 The simplest momentum indicator:
 
+$$\text{Momentum} = \text{Close} - \text{Close}_{N \text{ periods ago}}$$
+
+$$\text{ROC} = \left(\frac{\text{Close}}{\text{Close}_{N}} - 1\right) \times 100$$
+
 ```
-  Momentum = Current Close − Close N periods ago
-  (or expressed as % Rate of Change)
-
-  ROC = (Close / Close_N_ago − 1) × 100
-
   Above 0 / positive: upward momentum
   Below 0 / negative: downward momentum
 
@@ -239,9 +241,9 @@ The simplest momentum indicator:
 
 Essentially an inverted Stochastic. Created by Larry Williams:
 
-```
-  %R = −100 × (Highest High − Close) / (Highest High − Lowest Low)
+$$\%R = -100 \times \frac{\text{Highest High} - \text{Close}}{\text{Highest High} - \text{Lowest Low}}$$
 
+```
   Range: −100 (most oversold) to 0 (most overbought)
 
   %R > −20: Overbought
@@ -254,25 +256,20 @@ Essentially an inverted Stochastic. Created by Larry Williams:
 
 Using indicators that measure **different things** prevents duplication:
 
-```
-  Recommended combination:
-  ┌──────────────────────────────────────────────────────────┐
-  │ 1. TREND:     Moving average (200 SMA, EMA 50)           │
-  │    → What is the macro direction?                        │
-  │                                                          │
-  │ 2. MOMENTUM:  RSI or MACD                                │
-  │    → Is the move accelerating or decelerating?           │
-  │                                                          │
-  │ 3. TIMING:    Stochastic or candlestick confirmation     │
-  │    → Where is a precise entry in the trend?              │
-  └──────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    T[1. TREND — Moving Average<br/>200 SMA or EMA 50] --> Q[What is the macro direction?]
+    M[2. MOMENTUM — RSI or MACD] --> Q2[Is the move accelerating or decelerating?]
+    E[3. TIMING — Stochastic or candlestick] --> Q3[Where is the precise entry in the trend?]
 
-  Example (bullish setup):
-  Price above 200 SMA (trend ✓)
-  RSI crosses above 50 (momentum ✓)
-  Stochastic oversold and crossing up at key support (timing ✓)
-  → High-confidence long entry
+    Q --> S{All three align?}
+    Q2 --> S
+    Q3 --> S
+    S -->|Yes| HL[High-confidence entry]
+    S -->|No| W[Wait for confluence]
 ```
+
+**Example (bullish setup):** Price above 200 SMA (trend confirmed) + RSI crosses above 50 (momentum confirmed) + Stochastic oversold and crossing up at key support (timing confirmed) → high-confidence long entry.
 
 ---
 

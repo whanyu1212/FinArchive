@@ -15,14 +15,17 @@ A **moving average (MA)** smooths out price data by creating a constantly update
 
 The **arithmetic mean** of prices over N periods:
 
-```
-  SMA(N) = (P₁ + P₂ + P₃ + ... + P_N) / N
+$$\text{SMA}(N) = \frac{P_1 + P_2 + \cdots + P_N}{N}$$
 
-  Example: 5-day SMA
-  Prices: 1.0800, 1.0850, 1.0820, 1.0870, 1.0840
-  SMA(5) = (1.0800 + 1.0850 + 1.0820 + 1.0870 + 1.0840) / 5
-         = 5.4180 / 5 = 1.0836
-```
+Given: 5-day prices $= \{1.0800,\ 1.0850,\ 1.0820,\ 1.0870,\ 1.0840\}$
+
+$$
+\begin{align}
+\text{SMA}(5) &= \frac{1.0800 + 1.0850 + 1.0820 + 1.0870 + 1.0840}{5} \\[6pt]
+  &= \frac{5.4180}{5} \\[6pt]
+  &= \mathbf{1.0836}
+\end{align}
+$$
 
 **Characteristics:**
 - Equally weights all periods
@@ -36,16 +39,20 @@ The **arithmetic mean** of prices over N periods:
 
 Applies **heavier weighting to more recent prices** — reacts faster to price changes:
 
-```
-  EMA(N) = Price × k + EMA_previous × (1 − k)
+$$\text{EMA}(N) = \text{Price} \times k + \text{EMA}_{\text{previous}} \times (1 - k)$$
 
-  Where: k = 2 / (N + 1)   (smoothing factor)
+$$k = \frac{2}{N + 1}$$
 
-  Example: 10-day EMA (k = 2/11 = 0.1818):
-  If previous EMA = 1.0850 and today's price = 1.0900:
-  EMA = 1.0900 × 0.1818 + 1.0850 × 0.8182
-       = 0.1982 + 0.8877 = 1.0859
-```
+Given: $N = 10$, $k = \frac{2}{11} \approx 0.1818$, previous EMA $= 1.0850$, today's price $= 1.0900$
+
+$$
+\begin{align}
+\text{EMA} &= 1.0900 \times 0.1818 + 1.0850 \times (1 - 0.1818) \\[6pt]
+  &= 1.0900 \times 0.1818 + 1.0850 \times 0.8182 \\[6pt]
+  &= 0.19816 + 0.88776 \\[6pt]
+  &= \mathbf{1.0859}
+\end{align}
+$$
 
 **Characteristics:**
 - More responsive to recent price moves
@@ -59,9 +66,9 @@ Applies **heavier weighting to more recent prices** — reacts faster to price c
 
 Linearly weights more recent prices:
 
-```
-  WMA(N) = (N×P_N + (N-1)×P_(N-1) + ... + 1×P_1) / (N + (N-1) + ... + 1)
+$$\text{WMA}(N) = \frac{N \cdot P_N + (N-1) \cdot P_{N-1} + \cdots + 1 \cdot P_1}{N + (N-1) + \cdots + 1}$$
 
+```
   → More responsive than SMA but less than EMA
   → Less commonly used; VWMA (volume-weighted) more popular in equities
 ```
@@ -227,8 +234,9 @@ An **MA ribbon** plots multiple moving averages simultaneously to show trend str
 
 **VWAP** is the intraday average price weighted by volume — the most important intraday level for institutional traders:
 
+$$\text{VWAP} = \frac{\sum(\text{Price} \times \text{Volume})}{\sum \text{Volume}}$$
+
 ```
-  VWAP = Σ(Price × Volume) / Σ(Volume)
   (resets each session)
 
   Institutional use:

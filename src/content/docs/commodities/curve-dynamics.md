@@ -15,21 +15,21 @@ The **shape of the commodity forward curve** encodes everything the market knows
 
 For storable commodities, the forward price is theoretically bounded by the cost of carrying the physical commodity to a future date:
 
-```
-  F(t,T) = S(t) × e^[(r + s − c)(T−t)]
+$$F(t,T) = S(t) \times e^{(r + s - c)(T-t)}$$
 
-  Where:
-  F(t,T) = forward price for delivery at T
-  S(t)   = current spot price
-  r      = risk-free rate (financing cost)
-  s      = storage cost (% of spot per year)
-  c      = convenience yield (% per year)
-  (T−t)  = time to delivery in years
+Where:
+- $F(t,T)$ = forward price for delivery at $T$
+- $S(t)$ = current spot price
+- $r$ = risk-free rate (financing cost)
+- $s$ = storage cost (% of spot per year)
+- $c$ = convenience yield (% per year)
+- $(T-t)$ = time to delivery in years
 
-  Rearranging for convenience yield:
-  c = r + s − [ln(F/S) / (T−t)]
-  → Convenience yield is the residual that makes the equation hold
-```
+Rearranging for convenience yield:
+
+$$c = r + s - \frac{\ln(F/S)}{T-t}$$
+
+Convenience yield is the residual that makes the equation hold.
 
 ### Contango vs. Backwardation
 

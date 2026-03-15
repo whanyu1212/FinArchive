@@ -13,17 +13,18 @@ An **FX swap** is a simultaneous agreement to buy (or sell) a currency at the sp
 
 ## Structure
 
-```
-  ┌──────────────────────────────────────────────────────┐
-  │                    FX SWAP                           │
-  │                                                      │
-  │  NEAR LEG (today, T+2)        FAR LEG (future date)  │
-  │                                                      │
-  │  Party A ─── pays USD ──►     Party A ◄── pays USD ──│
-  │  Party A ◄── receives EUR ─── Party A ─── pays EUR ──│
-  │                                                      │
-  │  Rate: SPOT                   Rate: FORWARD          │
-  └──────────────────────────────────────────────────────┘
+```mermaid
+sequenceDiagram
+    participant A as Party A
+    participant B as Party B
+
+    Note over A,B: NEAR LEG (today, T+2) — rate: SPOT
+    A->>B: Pays USD
+    B->>A: Pays EUR
+
+    Note over A,B: FAR LEG (future date) — rate: FORWARD
+    B->>A: Returns USD
+    A->>B: Returns EUR
 ```
 
 **Key insight**: Only the **swap points** (the difference between spot and forward) are negotiated — not the absolute levels. The swap price IS the interest rate differential.
@@ -126,17 +127,18 @@ The most common short-dated FX swaps:
 
 The **swap points** are directly derived from the interest rate differential:
 
-```
-  Swap Points = S × (r_d − r_f) × T
+$$\text{Swap Points} = S \times (r_d - r_f) \times T$$
 
-  Approximation for small rates:
-  Swap Points ≈ S × (r_d − r_f) × T
+Given: $S = 1.0850$, $r_d = 5.30\%$, $r_f = 3.75\%$, $T = 0.25$ (3 months)
 
-  Example (EUR/USD, 3M):
-  = 1.0850 × (0.0530 − 0.0375) × 0.25
-  = 1.0850 × 0.00388
-  = 0.00421 ≈ 42 pips ✓
-```
+$$
+\begin{align}
+\text{Swap Points} &= 1.0850 \times (0.0530 - 0.0375) \times 0.25 \\[6pt]
+  &= 1.0850 \times 0.0155 \times 0.25 \\[6pt]
+  &= 1.0850 \times 0.003875 \\[6pt]
+  &\approx \mathbf{0.00421 \approx 42 \text{ pips} \ \checkmark}
+\end{align}
+$$
 
 ---
 
@@ -144,11 +146,9 @@ The **swap points** are directly derived from the interest rate differential:
 
 You can **back out an implied interest rate** from FX swap pricing — useful for detecting arbitrage or cross-market dislocations:
 
+$$r_d^{\text{implied}} = \frac{\left(\frac{F}{S}\right) \times (1 + r_f \times T) - 1}{T}$$
+
 ```
-  Implied USD rate from EUR/USD FX swap:
-
-  r_d (implied) = [(F/S) × (1 + r_f × T) − 1] / T
-
   If the implied rate ≠ actual USD SOFR rate, there is
   a cross-currency basis (see Cross-Currency Swaps page)
 ```

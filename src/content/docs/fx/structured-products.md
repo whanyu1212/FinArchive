@@ -16,23 +16,19 @@ sidebar:
 
 Most FX structured products share the same construction logic:
 
-```
-  STRUCTURED PRODUCT = VANILLA BOND/DEPOSIT + EMBEDDED OPTION(S)
+**STRUCTURED PRODUCT = VANILLA BOND/DEPOSIT + EMBEDDED OPTION(S)**
 
-  Example: Capital-protected note
-  ┌──────────────────────────────────────────────┐
-  │  100% invested                               │
-  │                                              │
-  │  ├── 90% → Zero-coupon bond → 100% at T     │
-  │  │         (capital protection)              │
-  │  │                                           │
-  │  └── 10% → FX Call Option → upside payoff   │
-  │            (performance kicker)              │
-  └──────────────────────────────────────────────┘
+Example: Capital-protected note
 
-  The larger the option portion, the higher the potential
-  return — but also the higher the embedded risk.
+```mermaid
+flowchart LR
+    A[100% Invested] --> B[90% → Zero-coupon bond]
+    A --> C[10% → FX Call Option]
+    B --> D[100% capital returned at maturity]
+    C --> E[Upside payoff — performance kicker]
 ```
+
+The larger the option portion, the higher the potential return — but also the higher the embedded risk.
 
 ---
 
@@ -207,11 +203,11 @@ One of the most complex structured FX products, heavily issued in Japan in the 2
 
 ### Structure
 
-```
-  PRDC = Long-dated note (10–30 years) with:
-  → Coupons paid in USD (attractive to Japanese investors)
-  → Coupon formula: C = Notional × max(α × S_USD/JPY / S_0 − K, 0)
+PRDC = Long-dated note (10–30 years) with coupons paid in USD (attractive to Japanese investors). The coupon formula at each payment date is:
 
+$$C = \text{Notional} \times \max\!\left(\alpha \times \frac{S_{\text{USD/JPY}}}{S_0} - K,\ 0\right)$$
+
+```
   Where:
   S_USD/JPY = USD/JPY spot at each coupon date
   S_0       = USD/JPY spot at inception

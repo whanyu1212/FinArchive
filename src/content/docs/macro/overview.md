@@ -31,30 +31,13 @@ Different macro drivers operate at different **time horizons**. Shorter-term pri
 
 ## The Five Pillars of Macro FX Analysis
 
-```
-  ┌─────────────────────────────────────────────────────────────────┐
-  │                    FX / ASSET PRICE                              │
-  │                                                                  │
-  │  Driven by:                                                      │
-  │                                                                  │
-  │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐           │
-  │  │   INTEREST   │  │   GROWTH     │  │  INFLATION   │           │
-  │  │   RATES      │  │  DIVERGENCE  │  │  DYNAMICS    │           │
-  │  │              │  │              │  │              │           │
-  │  │ Rate diffs,  │  │ GDP, PMI,    │  │ CPI, PCE,    │           │
-  │  │ carry,       │  │ employment,  │  │ PPI, wage    │           │
-  │  │ yield curve  │  │ consumption  │  │ growth       │           │
-  │  └──────────────┘  └──────────────┘  └──────────────┘           │
-  │                                                                  │
-  │  ┌──────────────┐  ┌──────────────────────────────────┐         │
-  │  │  EXTERNAL    │  │         RISK SENTIMENT           │         │
-  │  │  BALANCES    │  │                                  │         │
-  │  │              │  │  VIX, credit spreads, equity     │         │
-  │  │ Current a/c, │  │  flows, USD safe haven demand,   │         │
-  │  │ trade flows, │  │  geopolitics, positioning        │         │
-  │  │ FDI, BoP     │  │                                  │         │
-  │  └──────────────┘  └──────────────────────────────────┘         │
-  └─────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    IR[Interest Rates<br/>Rate differentials · carry · yield curve] --> FX[FX / Asset Price]
+    GD[Growth Divergence<br/>GDP · PMI · employment · consumption] --> FX
+    IN[Inflation Dynamics<br/>CPI · PCE · PPI · wage growth] --> FX
+    EB[External Balances<br/>Current account · trade flows · FDI · BoP] --> FX
+    RS[Risk Sentiment<br/>VIX · credit spreads · equity flows<br/>USD safe haven demand · positioning] --> FX
 ```
 
 ---
@@ -112,28 +95,24 @@ Market regimes determine which drivers dominate and how correlations behave:
 
 USD is the **world's reserve currency** and acts as a **barometer of global liquidity**:
 
-```
-  USD Strengthening Drivers:
-  ┌──────────────────────────────────────────────────────────┐
-  │ Fed hiking relative to other CBs                         │
-  │ Risk-off / global flight to safety                       │
-  │ US current account deficit narrows                       │
-  │ US exceptionalism (growth outperforms)                   │
-  │ Dollar funding stress (demand for USD)                   │
-  └──────────────────────────────────────────────────────────┘
-
-  USD Weakening Drivers:
-  ┌──────────────────────────────────────────────────────────┐
-  │ Fed cutting; other CBs hiking                            │
-  │ Risk-on; investors flow out of USD into EM, AUD, etc.    │
-  │ US current account deficit widens                        │
-  │ Fiscal expansion / debt sustainability concerns          │
-  │ Global central bank diversification away from USD        │
-  └──────────────────────────────────────────────────────────┘
-
-  USD cycle:
-  Strong → peaks when Fed is most hawkish and growth differential highest
-  Weak   → troughs when Fed starts cutting and global growth recovers
+```mermaid
+flowchart LR
+    subgraph Strong["USD Strengthening Drivers"]
+        S1[Fed hiking relative to other CBs]
+        S2[Risk-off — global flight to safety]
+        S3[US current account deficit narrows]
+        S4[US exceptionalism — growth outperforms]
+        S5[Dollar funding stress — demand for USD]
+    end
+    subgraph Weak["USD Weakening Drivers"]
+        W1[Fed cutting — other CBs hiking]
+        W2[Risk-on — flows out of USD into EM and AUD]
+        W3[US current account deficit widens]
+        W4[Fiscal expansion — debt sustainability concerns]
+        W5[Global CB diversification away from USD]
+    end
+    Strong --> Peak[USD peaks when Fed most hawkish<br/>and growth differential highest]
+    Weak --> Trough[USD troughs when Fed starts cutting<br/>and global growth recovers]
 ```
 
 ---

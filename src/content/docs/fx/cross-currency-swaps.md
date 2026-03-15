@@ -63,32 +63,22 @@ In a perfect CIP world, the basis **α = 0**. In practice, it is **almost always
 
 Before 2008, the EUR/USD basis was approximately zero. Post-GFC, it has been persistently negative, driven by:
 
-```
-  STRUCTURAL DRIVERS:
-  ┌──────────────────────────────────────────────────┐
-  │ 1. Regulatory constraints (Basel III)            │
-  │    → Banks' balance sheets are costly to expand  │
-  │    → Arbitrageurs cannot close the basis freely  │
-  │                                                  │
-  │ 2. USD demand from foreign investors             │
-  │    → Japanese / European investors buying        │
-  │      USD assets (Treasuries, MBS) need USD       │
-  │    → They swap local currency into USD via XCCY  │
-  │                                                  │
-  │ 3. USD money market fund reform (2016)           │
-  │    → Reduced USD commercial paper supply         │
-  │                                                  │
-  │ 4. ECB/BoJ QE                                    │
-  │    → Excess EUR/JPY pushing investors into USD   │
-  └──────────────────────────────────────────────────┘
-
-  SHORT-TERM DRIVERS (spikes):
-  ┌──────────────────────────────────────────────────┐
-  │ 1. Quarter-end / year-end balance sheet pressure │
-  │ 2. Risk-off events (demand for USD safe haven)   │
-  │ 3. Fed rate hikes (USD scarcity narrative)       │
-  │ 4. Crisis periods (2008 GFC, 2020 COVID)         │
-  └──────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    subgraph Structural["Structural Drivers (Persistent)"]
+        S1[Basel III constraints<br/>Arbitrageurs cannot close basis freely]
+        S2[USD demand from foreign investors<br/>JP/EU buying Treasuries via XCCY swap]
+        S3[USD money market fund reform 2016<br/>Reduced USD commercial paper supply]
+        S4[ECB / BoJ QE<br/>Excess EUR/JPY pushes investors into USD]
+    end
+    subgraph ShortTerm["Short-Term Drivers (Spikes)"]
+        T1[Quarter-end / year-end balance sheet pressure]
+        T2[Risk-off events — USD safe haven demand]
+        T3[Fed rate hikes — USD scarcity narrative]
+        T4[Crisis periods — 2008 GFC, 2020 COVID]
+    end
+    Structural --> X[Persistently Negative EUR/USD Basis]
+    ShortTerm --> Y[Basis Spike Episodes]
 ```
 
 ---

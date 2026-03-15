@@ -143,25 +143,17 @@ Theory (UIP) says:
 
 The **shape of the yield curve** contains information about future rate expectations:
 
+```mermaid
+flowchart TD
+    C{2Y–10Y Spread Shape} -->|Steep: 10Y >> 2Y| S[Growth expectations strong<br/>→ Positive for currency]
+    C -->|Flat| F[Uncertainty — policy in flux]
+    C -->|Inverted: 2Y > 10Y| I[Recession signal<br/>CB likely to cut → WEAKENS currency long-term<br/>Initial reaction can be positive — policy credibility]
 ```
-  2Y–10Y spread:
-  ┌──────────────────────────────────────────────────────────┐
-  │ Steep curve (10Y >> 2Y):   Growth expectations strong   │
-  │                            → Positive for currency      │
-  │                                                         │
-  │ Flat curve:                 Uncertainty; policy in flux │
-  │                                                         │
-  │ Inverted curve (2Y > 10Y): Recession signal             │
-  │   → CB likely to cut → may WEAKEN currency long-term    │
-  │   → But initial reaction can be USD-positive (hawkish   │
-  │     hikes caused inversion → policy credibility premia) │
-  └──────────────────────────────────────────────────────────┘
 
-  FX pairs to watch vs. yield spreads:
-  → USD/JPY vs. US 10Y − Japan 10Y spread (very high correlation)
-  → EUR/USD vs. Germany 2Y − US 2Y spread
-  → AUD/USD vs. Australia 2Y − US 2Y spread
-```
+FX pairs to watch vs. yield spreads:
+- USD/JPY vs. US 10Y − Japan 10Y spread (very high correlation)
+- EUR/USD vs. Germany 2Y − US 2Y spread
+- AUD/USD vs. Australia 2Y − US 2Y spread
 
 ---
 
@@ -210,34 +202,18 @@ Markets price **future rate paths** through:
 
 The most powerful FX trends occur when **two central banks are moving in opposite directions**:
 
-```
-  2014–2015: Fed tapering/hiking expectations vs. ECB QE
-  → EUR/USD fell from ~1.39 to ~1.05 (-25%)
+Examples:
+- 2014–2015: Fed tapering/hiking vs. ECB QE → EUR/USD fell from ~1.39 to ~1.05 (-25%)
+- 2021–2022: Fed hawkish pivot vs. BoJ YCC → USD/JPY rose from ~110 to ~152 (+38%)
+- 2022: BoE hiking vs. BoJ dovish → GBP/JPY surged from ~155 to ~185 (+19%)
 
-  2021–2022: Fed hawkish pivot vs. BoJ YCC (ultra-dovish)
-  → USD/JPY rose from ~110 to ~152 (+38%)
+**Policy divergence matrix** (Currency A CB vs. Currency B CB):
 
-  2022: BoE hiking aggressively (high UK inflation)
-         vs. BoJ dovish (deflation-fighter mentality)
-  → GBP/JPY surged from ~155 to ~185 (+19%)
-
-  Framework:
-  ┌─────────────────────────────────────────────────────┐
-  │            CURRENCY A CENTRAL BANK                  │
-  │           HAWKISH       NEUTRAL       DOVISH        │
-  │ ┌─────────────────────────────────────────────────┐ │
-  │ │Hawkish│  Neutral   │  A outperforms│  A strongly │ │
-  │ │       │            │               │  outperforms│ │
-  │ ├───────────────────────────────────────────────┤ │
-  │ │Neutral│  B outperforms │  Neutral   │  A outperforms │ │
-  │ │       │  slightly     │            │             │ │
-  │ ├───────────────────────────────────────────────┤ │
-  │ │Dovish │  B strongly   │  B out-    │  Neutral    │ │
-  │ │       │  outperforms  │  performs  │             │ │
-  │ └─────────────────────────────────────────────────┘ │
-  │        CURRENCY B CENTRAL BANK                      │
-  └─────────────────────────────────────────────────────┘
-```
+| Currency B CB ↓ / Currency A CB → | **Hawkish** | **Neutral** | **Dovish** |
+|---|---|---|---|
+| **Hawkish** | Neutral | A outperforms | A strongly outperforms |
+| **Neutral** | B outperforms slightly | Neutral | A outperforms |
+| **Dovish** | B strongly outperforms | B outperforms | Neutral |
 
 ---
 

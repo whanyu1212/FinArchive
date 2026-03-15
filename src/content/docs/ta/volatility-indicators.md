@@ -15,11 +15,13 @@ Developed by John Bollinger (1983). Three bands plotted around a central moving 
 
 ### Formula
 
-```
-  Middle Band = SMA(20)
-  Upper Band  = SMA(20) + (2 × Standard Deviation of last 20 closes)
-  Lower Band  = SMA(20) − (2 × Standard Deviation of last 20 closes)
+$$\text{Middle Band} = \text{SMA}(20)$$
 
+$$\text{Upper Band} = \text{SMA}(20) + 2\sigma_{20}$$
+
+$$\text{Lower Band} = \text{SMA}(20) - 2\sigma_{20}$$
+
+```
   Default: 20-period SMA, 2 standard deviations
 
   Key property:
@@ -107,15 +109,11 @@ Developed by J. Welles Wilder (1978). ATR measures the **average size of price m
 
 ### Formula
 
+$$TR = \max\bigl(\text{High} - \text{Low},\ |\text{High} - \text{Prev Close}|,\ |\text{Low} - \text{Prev Close}|\bigr)$$
+
+$$\text{ATR}(N) = \frac{\text{ATR}_{\text{prev}} \times (N-1) + TR}{N}$$
+
 ```
-  True Range (TR) = Maximum of:
-  1. High − Low           (normal daily range)
-  2. |High − Prev Close|  (gap up scenario)
-  3. |Low  − Prev Close|  (gap down scenario)
-
-  ATR(N) = Smoothed average of True Range over N periods
-           (Wilder smoothing: ATR = (ATR_prev × (N-1) + TR) / N)
-
   Default: ATR(14)
 
   Example (EUR/USD daily):
@@ -187,16 +185,16 @@ Developed by J. Welles Wilder (1978). ATR measures the **average size of price m
 
 Similar to Bollinger Bands but uses **ATR** instead of standard deviation for the channel width:
 
-```
-  Middle Line = EMA(20)
-  Upper Channel = EMA(20) + (2 × ATR(10))
-  Lower Channel = EMA(20) − (2 × ATR(10))
+$$\text{Middle Line} = \text{EMA}(20)$$
 
-  Key difference from Bollinger Bands:
-  → Bollinger Bands: based on standard deviation (price dispersion)
-  → Keltner Channels: based on ATR (range-based volatility)
-  → Keltner Channels tend to be SMOOTHER — less responsive to spike moves
-```
+$$\text{Upper Channel} = \text{EMA}(20) + 2 \times \text{ATR}(10)$$
+
+$$\text{Lower Channel} = \text{EMA}(20) - 2 \times \text{ATR}(10)$$
+
+Key difference from Bollinger Bands:
+- Bollinger Bands are based on standard deviation (price dispersion)
+- Keltner Channels are based on ATR (range-based volatility)
+- Keltner Channels tend to be smoother — less responsive to spike moves
 
 ### Bollinger Bands vs. Keltner Channels
 
@@ -246,22 +244,20 @@ Shows the **highest high and lowest low** over N periods — used in classic tre
 
 The choice of strategy should match the **volatility regime**:
 
-```
-  ┌──────────────────────────────────────────────────────────────┐
-  │  LOW VOLATILITY (ATR low, BB bands tight, VIX low)          │
-  │  → Range-trading strategies work (fade extremes)             │
-  │  → Mean-reversion at BB upper/lower bands                    │
-  │  → Avoid trend-following (high whipsaw rate)                 │
-  │  → WATCH FOR: squeeze breakout setup building up             │
-  └──────────────────────────────────────────────────────────────┘
-
-  ┌──────────────────────────────────────────────────────────────┐
-  │  HIGH VOLATILITY (ATR high, BB bands wide, VIX elevated)    │
-  │  → Trend-following strategies work                           │
-  │  → Momentum breakouts (ride the move)                        │
-  │  → Avoid mean-reversion (market overshoots levels)           │
-  │  → Widen stops (ATR-based sizing essential)                  │
-  └──────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    subgraph LowVol["Low Volatility — ATR low, BB tight, VIX low"]
+        LV1[Range-trading strategies — fade extremes]
+        LV2[Mean-reversion at BB upper/lower bands]
+        LV3[Avoid trend-following — high whipsaw rate]
+        LV4[Watch for squeeze breakout setup building]
+    end
+    subgraph HighVol["High Volatility — ATR high, BB wide, VIX elevated"]
+        HV1[Trend-following strategies work]
+        HV2[Momentum breakouts — ride the move]
+        HV3[Avoid mean-reversion — market overshoots]
+        HV4[Widen stops — ATR-based sizing essential]
+    end
 ```
 
 ---
@@ -270,9 +266,9 @@ The choice of strategy should match the **volatility regime**:
 
 A derived indicator from Bollinger Bands showing **how wide the bands are relative to the middle band**:
 
-```
-  Bandwidth = (Upper Band − Lower Band) / Middle Band × 100
+$$\text{Bandwidth} = \frac{\text{Upper Band} - \text{Lower Band}}{\text{Middle Band}} \times 100$$
 
+```
   Low reading:  Bands tight → squeeze → watch for breakout
   High reading: Bands wide → volatility already elevated
 ```

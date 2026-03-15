@@ -57,22 +57,16 @@ Similar to variance swap but pays on **realised volatility** (not variance):
 
 ### Vol Surface Dynamics: Key Concepts
 
-```
-  The FX vol surface has three key axes:
-  1. Level (ATM vol): overall vol regime
-  2. Skew (Risk Reversal): directional asymmetry
-  3. Convexity (Butterfly/Strangle): wing pricing
+The FX vol surface has three key axes:
+1. **Level** (ATM vol): overall vol regime
+2. **Skew** (Risk Reversal): directional asymmetry
+3. **Convexity** (Butterfly/Strangle): wing pricing
 
-  Complex derivatives often trade on movements WITHIN the vol surface:
+Complex derivatives often trade on movements within the vol surface:
 
-  ┌─────────────────────────────────────────────────────────────┐
-  │  Vega:  Sensitivity to parallel vol surface shift           │
-  │  Vanna: Sensitivity of delta to vol (∂Δ/∂σ)                │
-  │         → Measures skew risk                                │
-  │  Volga: Sensitivity of vega to vol (∂ν/∂σ)                 │
-  │         → Measures convexity / wing risk                    │
-  └─────────────────────────────────────────────────────────────┘
-```
+- **Vega**: Sensitivity to parallel vol surface shift
+- **Vanna**: $\partial^2 V / (\partial S \,\partial \sigma) = \partial \Delta / \partial \sigma$ — sensitivity of delta to vol; measures skew risk
+- **Volga**: $\partial^2 V / \partial \sigma^2 = \partial \nu / \partial \sigma$ — sensitivity of vega to vol; measures convexity / wing risk
 
 ---
 
@@ -227,25 +221,10 @@ Complex derivatives linking FX to other asset classes:
 
 For complex derivatives, first-order Greeks are insufficient. Key second-order and cross-Greeks:
 
-```
-  ┌──────────────────────────────────────────────────────────┐
-  │ Vanna  = ∂²V / (∂S ∂σ) = ∂Δ/∂σ = ∂ν/∂S               │
-  │   → How delta changes as vol changes                     │
-  │   → Critical for barrier and skewed structures           │
-  │                                                          │
-  │ Volga  = ∂²V / ∂σ²                                      │
-  │   → How vega changes as vol changes                      │
-  │   → Critical for OTM options, butterflies               │
-  │                                                          │
-  │ Charm  = ∂²V / (∂S ∂T) = ∂Δ/∂T                        │
-  │   → How delta changes as time passes                     │
-  │   → Important for daily delta hedging                    │
-  │                                                          │
-  │ Speed  = ∂³V / ∂S³ = ∂Γ/∂S                             │
-  │   → How gamma changes with spot                          │
-  │   → Matters near barrier levels                         │
-  └──────────────────────────────────────────────────────────┘
-```
+- **Vanna** $= \partial^2 V / (\partial S\,\partial \sigma) = \partial \Delta/\partial \sigma = \partial \nu/\partial S$ — how delta changes as vol changes; critical for barrier and skewed structures
+- **Volga** $= \partial^2 V / \partial \sigma^2$ — how vega changes as vol changes; critical for OTM options and butterflies
+- **Charm** $= \partial^2 V / (\partial S\,\partial T) = \partial \Delta/\partial T$ — how delta changes as time passes; important for daily delta hedging
+- **Speed** $= \partial^3 V / \partial S^3 = \partial \Gamma/\partial S$ — how gamma changes with spot; matters near barrier levels
 
 ### Vanna-Volga Pricing
 

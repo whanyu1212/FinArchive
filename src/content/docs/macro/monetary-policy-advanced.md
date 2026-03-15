@@ -13,19 +13,16 @@ Modern monetary policy analysis goes far beyond watching rate decisions. Underst
 
 Proposed by economist John Taylor (1993), the **Taylor Rule** is a prescriptive formula for setting the short-term policy rate based on observable macroeconomic conditions:
 
-```
-  Taylor Rule (original, 1993):
-  i* = r* + π + 0.5 × (π − π*) + 0.5 × (y − y*)
+$$i^* = r^* + \pi + 0.5 \times (\pi - \pi^*) + 0.5 \times (y - y^*)$$
 
-  Where:
-  i*  = recommended (target) nominal policy rate
-  r*  = neutral real interest rate ("R-star")
-  π   = actual inflation (typically last 12 months)
-  π*  = inflation target (usually 2%)
-  y   = actual output (GDP)
-  y*  = potential output (trend GDP)
-  (y − y*) = output gap (positive = economy running hot)
-```
+Where:
+- $i^*$ = recommended (target) nominal policy rate
+- $r^*$ = neutral real interest rate ("R-star")
+- $\pi$ = actual inflation (typically last 12 months)
+- $\pi^*$ = inflation target (usually 2%)
+- $y$ = actual output (GDP)
+- $y^*$ = potential output (trend GDP)
+- $(y - y^*)$ = output gap (positive = economy running hot)
 
 > Reference: Taylor, J.B. (1993). *Discretion versus Policy Rules in Practice.* Carnegie-Rochester Conference Series on Public Policy, 39, 195–214.
 
@@ -50,40 +47,41 @@ Proposed by economist John Taylor (1993), the **Taylor Rule** is a prescriptive 
 
 ### 2022 US Calibration: Fed Behind the Curve
 
-```
-  Inputs (mid-2022):
-  r*    = ~0.5% (Laubach-Williams estimate)
-  π     = 8.5% (CPI)
-  π*    = 2.0%
-  Output gap ≈ +2% (tight labour market, strong growth)
+Given: $r^* = 0.5\%$ (Laubach-Williams estimate), $\pi = 8.5\%$ (CPI), $\pi^* = 2.0\%$, output gap $\approx +2\%$ (tight labour market)
 
-  Taylor rate:
-  i* = 0.5 + 8.5 + 0.5 × (8.5 − 2.0) + 0.5 × 2.0
-     = 0.5 + 8.5 + 3.25 + 1.0
-     = 13.25%
+$$
+\begin{align}
+i^* &= r^* + \pi + 0.5 \times (\pi - \pi^*) + 0.5 \times (y - y^*) \\[6pt]
+  &= 0.5 + 8.5 + 0.5 \times (8.5 - 2.0) + 0.5 \times 2.0 \\[6pt]
+  &= 0.5 + 8.5 + 3.25 + 1.0 \\[6pt]
+  &= \mathbf{13.25\%}
+\end{align}
+$$
 
-  Actual Fed Funds rate (mid-2022): 1.75%–2.00%
+Actual Fed Funds rate (mid-2022): 1.75%–2.00%
 
-  → Fed was roughly 11 percentage points BELOW the Taylor rule
-  → This quantified "how far behind the curve" the Fed was
-  → Explains why markets priced very aggressive hiking ahead
-  → USD surged as the market anticipated rapid catch-up hikes
-```
+- The Fed was roughly 11 percentage points BELOW the Taylor rule
+- This quantified "how far behind the curve" the Fed was
+- Explains why markets priced very aggressive hiking ahead
+- USD surged as the market anticipated rapid catch-up hikes
 
 ### Modified Taylor Rules
 
+Different weights produce different prescriptions:
+
+**Balanced approach (Fed preferred):**
+
+$$i^* = r^* + \pi + 1.0 \times (\pi - \pi^*) + 1.0 \times (y - y^*)$$
+
+**Inflation-focused (Volcker style):**
+
+$$i^* = r^* + \pi + 1.5 \times (\pi - \pi^*) + 0.5 \times (y - y^*)$$
+
+**Employment-focused:**
+
+$$i^* = r^* + \pi + 0.5 \times (\pi - \pi^*) + 1.5 \times (y - y^*)$$
+
 ```
-  Different weights produce different prescriptions:
-
-  Balanced approach (Fed preferred):
-  i* = r* + π + 1.0 × (π − π*) + 1.0 × (y − y*)
-
-  Inflation-focused (Volcker style):
-  i* = r* + π + 1.5 × (π − π*) + 0.5 × (y − y*)
-
-  Employment-focused:
-  i* = r* + π + 0.5 × (π − π*) + 1.5 × (y − y*)
-
   The Fed's "Balanced Approach Shortfalls" rule (post-2020):
   → Uses shortfalls from maximum employment, not symmetric gaps
   → More tolerant of labor market strength; more aggressive on weakness
@@ -102,9 +100,11 @@ Proposed by economist John Taylor (1993), the **Taylor Rule** is a prescriptive 
   → Output = Potential output (no output gap)
   → Inflation = Target (π = π*)
   → No supply or demand shocks
+```
 
-  Nominal neutral rate = r* + π* ≈ 0.5% + 2% = 2.5% (often cited)
+$$\text{Nominal neutral rate} = r^* + \pi^* \approx 0.5\% + 2\% = 2.5\%$$
 
+```
   Policy stance:
   Fed Funds > r* + π → Restrictive policy (slowing economy)
   Fed Funds < r* + π → Accommodative policy (stimulating)
@@ -207,30 +207,19 @@ When the policy rate approaches zero, the central bank reaches the **Zero Lower 
 
 QE is effective through multiple channels, each with FX implications:
 
-```
-  CHANNEL 1: Portfolio Balance Effect
-  → QE removes long-duration bonds from market
-  → Investors forced into riskier assets (equities, EM bonds, FX carry)
-  → Currency WEAKENS as capital flows out seeking yield
-  → USD weakened during QE1, QE2, QE3 periods
+```mermaid
+flowchart TD
+    QE[QE: CB buys long-duration bonds] --> C1[Channel 1: Portfolio Balance]
+    QE --> C2[Channel 2: Expectations]
+    QE --> C3[Channel 3: Exchange Rate]
+    QE --> C4[Channel 4: Bank Lending]
+    QE --> C5[Channel 5: Wealth Effect]
 
-  CHANNEL 2: Expectations Channel
-  → QE signals commitment to keep rates low for longer
-  → Reduces "lift-off" expectations → keeps curve flat
-  → Weak currency via lower rate differential expectations
-
-  CHANNEL 3: Exchange Rate Channel
-  → Direct effect: weaker currency → export competitiveness
-  → "Currency wars" accusation: US QE exported depreciation to EM
-
-  CHANNEL 4: Bank Lending Channel
-  → Excess reserves → banks encouraged to lend
-  → In practice, this channel was weak post-2008
-    (banks held excess reserves; lending didn't surge)
-
-  CHANNEL 5: Wealth Effect
-  → Rising asset prices (equities, real estate) → consumer spending
-  → Indirect but significant for growth
+    C1 --> R1[Investors reach for riskier assets / EM bonds / carry<br/>→ Currency weakens]
+    C2 --> R2[Signals rates low for longer<br/>→ Flat curve, lower rate differential expectations]
+    C3 --> R3[Weaker currency → export competitiveness<br/>→ 'Currency wars' accusation]
+    C4 --> R4[Excess reserves → banks encouraged to lend<br/>→ Weak channel post-2008 in practice]
+    C5 --> R5[Rising equity / real estate prices → consumer spending<br/>→ Indirect but significant for growth]
 ```
 
 ---

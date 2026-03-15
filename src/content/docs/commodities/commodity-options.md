@@ -38,32 +38,19 @@ Commodity options markets have fundamentally different volatility dynamics from 
 
 Agricultural commodities — corn, soybeans, wheat, coffee, cocoa — typically exhibit **positive (call) skew**: out-of-the-money calls are more expensive than equivalent puts.
 
-```
-  WHY CALL SKEW IN AGRICULTURE:
-  Supply shock fear → price spike → need to buy calls as insurance
+```mermaid
+flowchart TD
+    A[Supply shock fear — drought, frost, floods] --> B[Price spike risk]
+    B --> C[Food companies buy OTM calls to cap input costs]
+    C --> D[Constant hedging demand lifts call implied vol]
 
-  ┌───────────────────────────────────────────────────────────┐
-  │ Demand for OTM calls:                                      │
-  │ → Food companies (Nestlé, Unilever) need to fix costs      │
-  │ → If wheat price doubles (drought), production costs surge │
-  │ → They buy call options to cap their input cost exposure   │
-  │ → This CONSTANT hedging demand lifts call implied vol       │
-  │                                                           │
-  │ Lack of demand for OTM puts:                               │
-  │ → Farmers (natural sellers) hedge by selling futures/calls  │
-  │ → They're less interested in buying puts (they benefit      │
-  │   from downside; they want upside protection for buyers)   │
-  │ → Puts cheaper due to structurally lower demand            │
-  └───────────────────────────────────────────────────────────┘
+    E[Farmers — natural sellers] --> F[Hedge by selling futures / calls]
+    F --> G[Low structural demand for OTM puts]
+    G --> H[Puts cheaper → Call skew emerges]
 
-  Supply-shock dynamics:
-  → Weather events (drought, frost, floods) create LEFT-SKEWED
-    SUPPLY distributions
-  → Most of the time: normal harvest = normal price
-  → Tail event: crop failure → price can DOUBLE or TRIPLE
-  → But price rarely collapses by 50%+ (demand is inelastic)
-  → Asymmetric supply creates asymmetric price distribution
-  → Asymmetric price distribution → call skew
+    I[Asymmetric supply distribution] --> J[Price can double or triple on crop failure]
+    J --> K[Price rarely collapses 50%+ — inelastic demand]
+    K --> L[Asymmetric price distribution → Call skew]
 ```
 
 ### Agricultural Skew by Commodity
@@ -225,10 +212,11 @@ Energy markets show **more complex skew** depending on the specific commodity:
 ```
   ASIAN OPTION:
   Payoff based on AVERAGE price over a period, not a single fixing
+```
 
-  Asian call payoff:
-  = max(A_T − K, 0) × Notional
+$$\text{Payoff} = \max(A_T - K,\ 0) \times \text{Notional}$$
 
+```
   Where A_T = arithmetic average of daily settlement prices
               over the averaging period
 
@@ -248,48 +236,35 @@ Energy markets show **more complex skew** depending on the specific commodity:
 
   Asian options are CHEAPER than European options:
   → Average price has lower variance than point-in-time price
-  → Volatility of average ≈ σ / √3 (for uniform averaging)
-  → Asian vol ≈ 57% of equivalent European vol
-  → Premium substantially reduced
 ```
+
+$$\sigma_{\text{average}} \approx \frac{\sigma}{\sqrt{3}}$$
+
+Asian vol is approximately 57% of the equivalent European vol, substantially reducing the premium.
 
 ---
 
 ## Basis Risk in Commodity Hedging
 
-```
-  BASIS RISK = the risk that the hedge instrument and the
-               physical exposure do NOT move together perfectly
+**Basis Risk** = the risk that the hedge instrument and the physical exposure do NOT move together perfectly.
 
-  Sources of basis risk in commodities:
-  ┌─────────────────────────────────────────────────────────┐
-  │ 1. LOCATION BASIS                                        │
-  │    Physical crude at a remote location ≠ Brent/WTI      │
-  │    → Gulf Coast crude vs. WTI (Midland/Houston differential)│
-  │    → African grade (e.g., Bonny Light) vs. Dated Brent   │
-  │    → Basis can be $1–10/bbl and fluctuate significantly  │
-  │                                                         │
-  │ 2. QUALITY BASIS                                         │
-  │    Physical product quality ≠ futures contract specification│
-  │    → High-sulfur fuel oil vs. 0.5% VLSFO benchmark       │
-  │    → Winter-grade vs. summer-grade diesel                 │
-  │                                                         │
-  │ 3. TIMING BASIS                                          │
-  │    Futures roll date ≠ physical delivery date             │
-  │    → Rolling from M1 to M2 creates spread risk           │
-  │    → Bridged by CFDs, EFPs in crude; swap markets elsewhere│
-  │                                                         │
-  │ 4. VOLUME BASIS                                          │
-  │    Physical lot size ≠ standard futures contract size     │
-  │    → NYMEX WTI: 1,000 bbls; physical cargo: 600,000 bbls  │
-  │    → Rounding and partial hedge basis                     │
-  └─────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    BR[Sources of Basis Risk] --> L[1. Location Basis]
+    BR --> Q[2. Quality Basis]
+    BR --> T[3. Timing Basis]
+    BR --> V[4. Volume Basis]
 
-  Managing basis risk:
-  → Use differential swaps (fix the basis explicitly)
-  → Trade in the physical market directly to eliminate location basis
-  → Accept residual basis risk as unhedgeable cost of hedging
+    L --> L1[Physical crude at remote location ≠ Brent/WTI<br/>Basis can be $1–10/bbl]
+    Q --> Q1[Physical product quality ≠ futures spec<br/>e.g. high-sulfur vs. VLSFO benchmark]
+    T --> T1[Futures roll date ≠ physical delivery date<br/>Rolling M1 → M2 creates spread risk]
+    V --> V1[Physical lot size ≠ futures contract size<br/>NYMEX WTI: 1,000 bbls vs. cargo: 600,000 bbls]
 ```
+
+Managing basis risk:
+- Use differential swaps (fix the basis explicitly)
+- Trade in the physical market directly to eliminate location basis
+- Accept residual basis risk as unhedgeable cost of hedging
 
 ---
 

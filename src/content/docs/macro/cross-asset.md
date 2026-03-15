@@ -11,20 +11,17 @@ FX does not exist in isolation. Currency markets are deeply intertwined with **e
 
 ## The Cross-Asset Framework
 
-```
-  ┌────────────────────────────────────────────────────────────────────┐
-  │                      MACRO REGIME                                  │
-  │                           │                                        │
-  │        ┌──────────────────┼──────────────────┐                    │
-  │        ▼                  ▼                  ▼                    │
-  │   INTEREST RATES      EQUITIES          COMMODITIES               │
-  │   (Rates & Credit)   (Risk proxy)      (Cycle proxy)              │
-  │        │                  │                  │                    │
-  │        └──────────────────┼──────────────────┘                    │
-  │                           ▼                                        │
-  │                      FX MARKETS                                    │
-  │  (Rates diff → forward/carry; Risk → safe havens; Growth → trade) │
-  └────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    MR[Macro Regime] --> IR[Interest Rates — Rates and Credit]
+    MR --> EQ[Equities — Risk proxy]
+    MR --> COM[Commodities — Cycle proxy]
+    IR --> FX[FX Markets]
+    EQ --> FX
+    COM --> FX
+    FX --> D1[Rates differential → forward / carry]
+    FX --> D2[Risk sentiment → safe havens]
+    FX --> D3[Growth → trade flows]
 ```
 
 ---
@@ -184,25 +181,23 @@ In G10, **high yield credit spreads** are a risk barometer:
 
 The **USD Index (DXY)** is more than a currency — it is a **global risk barometer**:
 
-```
-  Strong USD environment:
-  ┌──────────────────────────────────────────────────────────┐
-  │ → EM economies face higher USD debt costs                │
-  │ → Commodity prices fall (USD-priced, non-USD demand)     │
-  │ → Global liquidity tightens (USD funding scarcer)        │
-  │ → Capital flows from EM → US (safe haven seeking)        │
-  │ → EM central banks intervene (burn reserves)             │
-  │ → Global trade slows (USD invoicing dominance)           │
-  └──────────────────────────────────────────────────────────┘
-
-  Weak USD environment:
-  ┌──────────────────────────────────────────────────────────┐
-  │ → EM economies get relief (cheaper debt servicing)       │
-  │ → Commodities rally (USD-priced, more accessible)        │
-  │ → Global liquidity eases (more USD available)            │
-  │ → Capital flows to EM (higher yields + growth)           │
-  │ → EM central banks can cut (less pressure to defend FX)  │
-  └──────────────────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    subgraph Strong["Strong USD"]
+        S1[EM economies face higher USD debt costs]
+        S2[Commodity prices fall — USD-priced, non-USD demand]
+        S3[Global liquidity tightens — USD funding scarcer]
+        S4[Capital flows EM → US — safe haven seeking]
+        S5[EM central banks intervene — burn reserves]
+        S6[Global trade slows — USD invoicing dominance]
+    end
+    subgraph Weak["Weak USD"]
+        W1[EM economies get relief — cheaper debt servicing]
+        W2[Commodities rally — USD-priced, more accessible]
+        W3[Global liquidity eases — more USD available]
+        W4[Capital flows to EM — higher yields and growth]
+        W5[EM central banks can cut — less FX defence pressure]
+    end
 ```
 
 ---

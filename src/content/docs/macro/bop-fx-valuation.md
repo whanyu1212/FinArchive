@@ -15,27 +15,26 @@ Short-term FX is driven by rate differentials and risk sentiment. Long-term FX v
 
 ### Absolute PPP
 
+$$S_{\text{PPP}} = \frac{P_{\text{domestic}}}{P_{\text{foreign}}}$$
+
 ```
+  Where P = price level (GDP deflator or CPI)
+
   If a basket of goods costs $100 in the US and £75 in the UK:
   PPP-implied rate = $100 / £75 = 1.333 USD/GBP
 
   If the actual exchange rate is 1.50 USD/GBP:
   → GBP is OVERVALUED by ~12% vs. PPP
   → Theory: GBP should depreciate over time toward PPP
-
-  General formula:
-  S_PPP = P_domestic / P_foreign
-
-  Where P = price level (GDP deflator or CPI)
 ```
 
 ### Relative PPP
 
+More practical: exchange rate changes equal inflation differentials.
+
+$$\Delta S \approx \pi_{\text{domestic}} - \pi_{\text{foreign}}$$
+
 ```
-  More practical: exchange rate CHANGES equal inflation differentials
-
-  ΔS ≈ π_domestic − π_foreign
-
   If US inflation = 4%, Eurozone inflation = 2%:
   → EUR/USD should appreciate by 2% per year (EUR "cheaper" inflation)
   → Equivalently: USD should weaken 2% per year
@@ -50,24 +49,23 @@ Short-term FX is driven by rate differentials and risk sentiment. Long-term FX v
 
 *The Economist*'s Big Mac Index (published since 1986) is the most famous PPP application — comparing the price of a McDonald's Big Mac across countries:
 
-```
-  Example (illustrative):
-  Big Mac price in US: $5.58
-  Big Mac price in UK: £3.89
+Given: Big Mac price in US $= \$5.58$, Big Mac price in UK $= £3.89$, actual GBP/USD $= 1.270$
 
-  PPP-implied GBP/USD: 5.58 / 3.89 = 1.434
-  Actual GBP/USD: 1.270
+$$
+\begin{align}
+\text{PPP-implied GBP/USD} &= \frac{5.58}{3.89} = 1.434 \\[6pt]
+\text{Mispricing} &= \frac{1.270 - 1.434}{1.434} \\[6pt]
+  &= \mathbf{-11.4\%} \quad \text{(GBP "undervalued" vs. Big Mac PPP)}
+\end{align}
+$$
 
-  → GBP is "undervalued" by (1.270 − 1.434) / 1.434 = −11.4% vs. Big Mac PPP
+Limitations of Big Mac Index:
+- Service costs differ (rent, labour) → not a tradeable good
+- Taxes and regulations vary
+- McDonald's pricing is strategic (market power)
+- Better as a directional indicator than a precise level
 
-  Limitations of Big Mac Index:
-  → Service costs differ (rent, labour) → not a tradeable good
-  → Taxes and regulations vary
-  → McDonald's pricing is strategic (market power)
-  → Better as a directional indicator than a precise level
-
-  More rigorous: IMF uses GDP deflator-based PPP for its World Economic Outlook
-```
+More rigorous: IMF uses GDP deflator-based PPP for its World Economic Outlook.
 
 ### PPP in Practice: A Very Long-Run Signal
 
@@ -95,28 +93,26 @@ The **Balance of Payments** is the accounting identity that records all transact
 
 ### BoP Structure
 
-```
-  BALANCE OF PAYMENTS = 0 (always, by accounting identity)
+**BALANCE OF PAYMENTS = 0** (always, by accounting identity — CA + KA + FA = 0 with net errors and omissions adjusting)
 
-  ┌─────────────────────────────────────────────────────────┐
-  │ CURRENT ACCOUNT (CA)                                    │
-  │  Trade in goods (exports − imports)                     │
-  │  Trade in services (tourism, finance, tech)             │
-  │  Primary income (investment returns, remittances)       │
-  │  Secondary income (transfers, foreign aid)              │
-  │                                                         │
-  │ CAPITAL ACCOUNT (KA)                                    │
-  │  Capital transfers (debt forgiveness, migrant transfers)│
-  │  Acquisition/disposal of non-financial assets           │
-  │                                                         │
-  │ FINANCIAL ACCOUNT (FA)                                  │
-  │  Foreign direct investment (FDI)                        │
-  │  Portfolio investment (equities, bonds)                 │
-  │  Other investment (bank loans, trade credit)            │
-  │  Reserve assets (central bank FX reserves)              │
-  └─────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    BOP[Balance of Payments] --> CA[Current Account]
+    BOP --> KA[Capital Account]
+    BOP --> FA[Financial Account]
 
-  CA + KA + FA = 0 (with net errors and omissions adjusting)
+    CA --> CA1[Trade in goods — exports minus imports]
+    CA --> CA2[Trade in services — tourism, finance, tech]
+    CA --> CA3[Primary income — investment returns, remittances]
+    CA --> CA4[Secondary income — transfers, foreign aid]
+
+    KA --> KA1[Capital transfers — debt forgiveness, migrant transfers]
+    KA --> KA2[Acquisition / disposal of non-financial assets]
+
+    FA --> FA1[Foreign direct investment — FDI]
+    FA --> FA2[Portfolio investment — equities, bonds]
+    FA --> FA3[Other investment — bank loans, trade credit]
+    FA --> FA4[Reserve assets — central bank FX reserves]
 ```
 
 ### Current Account and Long-Run FX

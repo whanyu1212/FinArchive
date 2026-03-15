@@ -22,27 +22,27 @@ The most widely traded crack spread approximates a simplified refinery that proc
   ─────────────────────────────────────────────────────────
   OUTPUTS:  2 barrels RBOB Gasoline + 1 barrel Heating Oil
   INPUT:    3 barrels WTI Crude Oil
-
-  Formula:
-  Crack = [(2 × RBOB) + (1 × HO) − (3 × WTI)] / 3
-
-  All prices in $/barrel (RBOB and HO quoted in $/gallon → × 42)
-
-  Example:
-  WTI:  $80.00/bbl
-  RBOB: $2.50/gallon × 42 = $105.00/bbl
-  HO:   $2.80/gallon × 42 = $117.60/bbl
-
-  3-2-1 Crack = [(2 × $105) + (1 × $117.60) − (3 × $80)] / 3
-              = [$210 + $117.60 − $240] / 3
-              = $87.60 / 3
-              = $29.20/bbl
-
-  → A refinery earns approximately $29.20/bbl over crude costs
-  → This is the GROSS margin; operating costs are on top
-  → Typical refinery opex: $3–8/bbl (energy, labour, maintenance)
-  → Net margin ≈ $21–26/bbl in this example
 ```
+
+$$\text{Crack}_{3\text{-}2\text{-}1} = \frac{2 \times \text{RBOB} + 1 \times \text{HO} - 3 \times \text{WTI}}{3}$$
+
+All prices in \$/barrel (RBOB and HO quoted in \$/gallon → × 42).
+
+Given: $\text{WTI} = \$80.00/\text{bbl}$, $\text{RBOB} = \$2.50/\text{gal} \times 42 = \$105.00/\text{bbl}$, $\text{HO} = \$2.80/\text{gal} \times 42 = \$117.60/\text{bbl}$
+
+$$
+\begin{align}
+\text{Crack}_{3\text{-}2\text{-}1} &= \frac{(2 \times \$105.00) + (1 \times \$117.60) - (3 \times \$80.00)}{3} \\[6pt]
+  &= \frac{\$210.00 + \$117.60 - \$240.00}{3} \\[6pt]
+  &= \frac{\$87.60}{3} \\[6pt]
+  &= \mathbf{\$29.20/\text{bbl}}
+\end{align}
+$$
+
+- A refinery earns approximately \$29.20/bbl over crude costs
+- This is the GROSS margin; operating costs are on top
+- Typical refinery opex: \$3–8/bbl (energy, labour, maintenance)
+- Net margin ≈ \$21–26/bbl in this example
 
 ### The 5-3-2 Crack Spread
 
@@ -52,9 +52,11 @@ A variation used for refineries with higher distillate yields:
   5-3-2 Crack Spread:
   INPUT:    5 barrels crude
   OUTPUTS:  3 barrels gasoline + 2 barrels distillate
+```
 
-  = [(3 × Gasoline) + (2 × Distillate) − (5 × Crude)] / 5
+$$\text{Crack}_{5\text{-}3\text{-}2} = \frac{3 \times \text{Gasoline} + 2 \times \text{Distillate} - 5 \times \text{Crude}}{5}$$
 
+```
   Why 5-3-2 vs 3-2-1?
   → Complex refineries (with cokers, hydrocrackers) achieve higher
     distillate yield (jet, diesel, heating oil)
@@ -90,35 +92,28 @@ A variation used for refineries with higher distillate yields:
 
 ### Trading Crack Spreads
 
-```
-  NYMEX Crack Spread Futures:
-  → CME offers "crack spread" combinations as single instruments
-  → Or: leg it manually (short crude futures, long product futures)
+NYMEX Crack Spread Futures: CME offers "crack spread" combinations as single instruments, or leg it manually (short crude futures, long product futures).
 
-  Long crack = long products, short crude
-  → Benefits when refining margins EXPAND
-  → Classic trade: ahead of driving season (buy gasoline crack)
-  → Or: ahead of winter (buy heating oil crack)
+**Long crack** (long products, short crude): benefits when refining margins expand — classic trade ahead of driving season or winter.
 
-  Short crack = short products, long crude
-  → Benefits when refining margins CONTRACT
-  → Typical when crude input costs rise faster than product prices
-  → Or: refinery capacity returns after maintenance
+**Short crack** (short products, long crude): benefits when refining margins contract — when crude costs rise faster than products, or refinery capacity returns.
 
-  Factors driving crack spread changes:
-  ┌─────────────────────────────────────────────────────────┐
-  │ Bullish crack spreads (margins expand):                  │
-  │ → Refinery outages (hurricane season; maintenance)       │
-  │ → Seasonal demand pickup                                 │
-  │ → Crude grade differentials favouring complex refiners   │
-  │ → Supply disruptions (war, sanctions)                    │
-  │                                                         │
-  │ Bearish crack spreads (margins contract):                │
-  │ → New refinery capacity comes online                     │
-  │ → Demand weakness (recession, high pump prices)          │
-  │ → Crude price spikes faster than product repricing       │
-  │ → Mild winter (distillate demand disappoints)            │
-  └─────────────────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    subgraph Bullish["Bullish Crack — Margins Expand"]
+        B1[Refinery outages<br/>hurricane season / maintenance]
+        B2[Seasonal demand pickup]
+        B3[Crude grade differentials favour complex refiners]
+        B4[Supply disruptions — war, sanctions]
+    end
+    subgraph Bearish["Bearish Crack — Margins Contract"]
+        D1[New refinery capacity comes online]
+        D2[Demand weakness — recession, high pump prices]
+        D3[Crude price spikes faster than product repricing]
+        D4[Mild winter — distillate demand disappoints]
+    end
+    Bullish --> Up[Crack spread WIDENS]
+    Bearish --> Down[Crack spread NARROWS]
 ```
 
 ---
@@ -127,51 +122,50 @@ A variation used for refineries with higher distillate yields:
 
 The **spark spread** measures the profitability of burning natural gas to generate electricity:
 
-```
-  Spark Spread = Electricity Price − (Gas Price × Heat Rate)
+$$\text{Spark Spread} = \text{Electricity Price} - (\text{Gas Price} \times \text{Heat Rate})$$
 
+```
   Where:
   Electricity Price = $/MWh (power market)
   Gas Price         = $/MMBtu (natural gas)
   Heat Rate         = MMBtu of gas needed per MWh of electricity
                       (efficiency measure; typical CCGT: 7–8 MMBtu/MWh)
-
-  Example (UK NBP/N2EX market):
-  Gas price:        100 p/therm = ~$13.50/MMBtu (converting units)
-  Power price:      £120/MWh
-  Heat rate:        7.5 MMBtu/MWh
-
-  Spark spread = £120 − (£3.93 × 7.5)  [converting gas to £/MMBtu]
-               = £120 − £29.48
-               = £90.52/MWh  ← EXTREMELY profitable (2022 energy crisis)
-
-  Normal range (UK): £5–20/MWh
-  2022 peak:         £80–150/MWh
 ```
+
+Given: Power price $= £120/\text{MWh}$, gas price $\approx £3.93/\text{MMBtu}$ (converted from 100 p/therm), heat rate $= 7.5\ \text{MMBtu/MWh}$
+
+$$
+\begin{align}
+\text{Spark Spread} &= £120/\text{MWh} - (£3.93/\text{MMBtu} \times 7.5\ \text{MMBtu/MWh}) \\[6pt]
+  &= £120 - £29.48 \\[6pt]
+  &= \mathbf{£90.52/\text{MWh}}
+\end{align}
+$$
+
+This was an extremely profitable level during the 2022 energy crisis. Normal range (UK): £5–20/MWh; 2022 peak: £80–150/MWh.
 
 ### Clean Spark Spread
 
 The **clean spark spread** accounts for the carbon cost under emissions trading schemes (EU ETS, UK ETS):
 
-```
-  Clean Spark Spread = Spark Spread − (Carbon Intensity × Carbon Price)
+$$\text{Clean Spark Spread} = \text{Spark Spread} - (\text{Carbon Intensity} \times \text{Carbon Price})$$
 
-  Carbon intensity of gas-fired power: ~0.40 tCO2/MWh (CCGT)
+Carbon intensity of gas-fired power: ~0.40 tCO₂/MWh (CCGT).
 
-  Example:
-  Spark spread:     £90/MWh
-  Carbon price:     £50/tCO2  (EU ETS)
-  Carbon cost:      0.40 × £50 = £20/MWh
+Given: spark spread $= £90/\text{MWh}$, carbon intensity $= 0.40\ \text{tCO}_2/\text{MWh}$, carbon price $= £50/\text{tCO}_2$ (EU ETS)
 
-  Clean Spark Spread = £90 − £20 = £70/MWh
+$$
+\begin{align}
+\text{Carbon cost} &= 0.40\ \text{tCO}_2/\text{MWh} \times £50/\text{tCO}_2 = £20/\text{MWh} \\[6pt]
+\text{Clean Spark Spread} &= £90/\text{MWh} - £20/\text{MWh} \\[6pt]
+  &= \mathbf{£70/\text{MWh}}
+\end{align}
+$$
 
-  Why it matters:
-  → Post-EU ETS, carbon cost is now a significant input
-  → A clean spark spread >0 means gas generation is profitable
-    AFTER paying for emissions
-  → Clean spark spread <0 means gas plants run at a loss and may
-    choose not to generate ("economic shutdown")
-```
+Why it matters:
+- Post-EU ETS, carbon cost is now a significant input
+- A clean spark spread >0 means gas generation is profitable AFTER paying for emissions
+- Clean spark spread <0 means gas plants run at a loss and may choose not to generate ("economic shutdown")
 
 ---
 
@@ -179,29 +173,33 @@ The **clean spark spread** accounts for the carbon cost under emissions trading 
 
 The **dark spread** measures profitability of burning coal to generate electricity:
 
-```
-  Dark Spread = Electricity Price − (Coal Price × Heat Rate)
+$$\text{Dark Spread} = \text{Electricity Price} - (\text{Coal Price} \times \text{Heat Rate})$$
 
-  Coal Heat Rate: typically 9–10 MMBtu/MWh (less efficient than gas)
-  → Coal plants are less thermally efficient than modern CCGT
+Coal heat rate: typically 9–10 MMBtu/MWh (less efficient than gas — coal plants are less thermally efficient than modern CCGT).
 
-  Example:
-  Coal price:   $150/tonne
-  Heat rate:    9.5 MMBtu/MWh
-  Coal per MWh: $150/tonne ÷ 26.1 MMBtu/tonne × 9.5 = $54.6/MWh
-  Power price:  $80/MWh
+Given: coal price $= \$150/\text{tonne}$, heat rate $= 9.5\ \text{MMBtu/MWh}$, coal energy content $= 26.1\ \text{MMBtu/tonne}$, power price $= \$80/\text{MWh}$
 
-  Dark spread = $80 − $54.6 = $25.4/MWh
+$$
+\begin{align}
+\text{Coal cost per MWh} &= \frac{\$150/\text{tonne}}{26.1\ \text{MMBtu/tonne}} \times 9.5\ \text{MMBtu/MWh} \\[6pt]
+  &= \$5.747/\text{MMBtu} \times 9.5 = \$54.60/\text{MWh} \\[6pt]
+\text{Dark Spread} &= \$80.00 - \$54.60 = \mathbf{\$25.40/\text{MWh}}
+\end{align}
+$$
 
-  Clean Dark Spread:
-  Carbon intensity of coal: ~0.95 tCO2/MWh (much higher than gas)
+Carbon intensity of coal: ~0.95 tCO₂/MWh (much higher than gas).
 
-  Clean Dark Spread = Dark Spread − (0.95 × Carbon Price)
+At carbon price $= \$50/\text{tCO}_2$:
 
-  At Carbon Price = $50/tCO2:
-  Clean Dark Spread = $25.4 − $47.5 = −$22.1/MWh  ← LOSS
-  → Coal-fired power is uneconomic when carbon prices are high
-```
+$$
+\begin{align}
+\text{Carbon cost} &= 0.95\ \text{tCO}_2/\text{MWh} \times \$50/\text{tCO}_2 = \$47.50/\text{MWh} \\[6pt]
+\text{Clean Dark Spread} &= \$25.40 - \$47.50 \\[6pt]
+  &= \mathbf{-\$22.10/\text{MWh}} \quad \leftarrow \text{LOSS}
+\end{align}
+$$
+
+Coal-fired power is uneconomic when carbon prices are high.
 
 ---
 
@@ -209,35 +207,20 @@ The **dark spread** measures profitability of burning coal to generate electrici
 
 The **spark-dark spread comparison** drives fuel switching decisions:
 
-```
-  FUEL SWITCHING THRESHOLD:
+```mermaid
+flowchart TD
+    P[Power Price] --> CS[Clean Spark Spread]
+    P --> CD[Clean Dark Spread]
+    GAS[TTF Gas Price × Heat Rate + Carbon Cost] --> CS
+    COAL[API2 Coal Price × Heat Rate + Carbon Cost] --> CD
+    EUA[EUA Carbon Price — tiebreaker] --> CS
+    EUA --> CD
 
-  Gas and coal both generate electricity:
-  → If clean spark spread > clean dark spread: GAS PREFERRED
-  → If clean dark spread > clean spark spread: COAL PREFERRED
-
-  The switching point is reached when:
-  Clean Spark = Clean Dark
-
-  Gas price at switching = (Power price − Coal cost − Carbon differential)
-                           / Gas heat rate
-
-  In practice:
-  → European gas/coal switching was a major market dynamic 2021–2022
-  → High gas prices → coal switched on (coal dark spread > spark spread)
-  → But high carbon prices partially offset coal advantage
-  → Net result: complex interplay of all three markets
-
-  Gas-to-coal switching analytics:
-  → TTF gas price determines European power prices in gas-marginal hours
-  → API2 coal price determines switching threshold
-  → EUA (EU Allowance) carbon price is the tiebreaker
-
-  This three-way relationship means:
-  → Gas price rises → power price rises (gas-marginal when expensive)
-  → But coal becomes more attractive IF carbon doesn't offset
-  → Natural gas is more carbon-efficient, so at carbon prices >$50,
-    gas retains the advantage even at higher gas prices
+    CS --> SW{Compare}
+    CD --> SW
+    SW -->|Clean Spark > Clean Dark| G[Gas preferred — gas plant dispatched]
+    SW -->|Clean Dark > Clean Spark| C[Coal preferred — coal plant dispatched]
+    SW -->|Roughly equal| T[Switching threshold — marginal plant indifferent]
 ```
 
 ---

@@ -30,20 +30,24 @@ sidebar:
   The SPREAD = Best Ask − Best Bid = $100.03 − $100.02 = $0.01 (1 tick)
 
   MID-PRICE = ($100.03 + $100.02) / 2 = $100.025
+```
 
-  ORDER TYPES:
-  ┌─────────────────────────────────────────────────────────┐
-  │ Limit Order: Trade at a specific price or better        │
-  │   → Adds liquidity to the book (passive)                │
-  │   → May not execute if price doesn't reach limit        │
-  │                                                         │
-  │ Market Order: Trade immediately at best available price │
-  │   → Takes liquidity from the book (aggressive)          │
-  │   → Guaranteed execution; uncertain price               │
-  │                                                         │
-  │ Stop Order: Becomes a market order when trigger hit     │
-  │   → Used for stop-loss and breakout entries             │
-  └─────────────────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    subgraph LO["Limit Order"]
+        L1[Trade at a specific price or better]
+        L2[Adds liquidity to the book — passive]
+        L3[May not execute if price doesn't reach limit]
+    end
+    subgraph MO["Market Order"]
+        M1[Trade immediately at best available price]
+        M2[Takes liquidity from the book — aggressive]
+        M3[Guaranteed execution — uncertain price]
+    end
+    subgraph SO["Stop Order"]
+        S1[Becomes a market order when trigger is hit]
+        S2[Used for stop-loss and breakout entries]
+    end
 ```
 
 ### Order Book Depth
@@ -73,32 +77,17 @@ sidebar:
 
 The spread is not random — it compensates market makers for three distinct costs:
 
-```
-  BID-ASK SPREAD = Order Processing Cost + Inventory Cost + Adverse Selection Cost
+**BID-ASK SPREAD = Order Processing Cost + Inventory Cost + Adverse Selection Cost**
 
-  1. ORDER PROCESSING COST:
-  → The administrative cost of making markets
-  → Fixed costs: technology, regulatory, back office
-  → Constant regardless of information environment
-  → Declining over time (electronic markets)
+```mermaid
+flowchart TD
+    S[Bid-Ask Spread] --> C1[1. Order Processing Cost]
+    S --> C2[2. Inventory Cost]
+    S --> C3[3. Adverse Selection Cost]
 
-  2. INVENTORY COST:
-  → Market makers accumulate positions they don't want
-  → Holding inventory creates directional risk
-  → Compensation: spread wide enough to cover inventory risk
-  → Glosten-Milgrom (1985): spread widens as uncertainty increases
-
-  3. ADVERSE SELECTION COST:
-  → Some traders are INFORMED (they know the price should move)
-  → Market makers trade against informed traders and lose
-  → Must charge all traders a spread large enough to recoup
-    losses from informed trading
-  → Easley-O'Hara model: spread = f(probability of informed trading)
-
-  Empirical decomposition (Kyle, 1985):
-  → Roll (1984) model: estimate spread from return autocorrelation
-  → PIN (Probability of Informed Trading): from order flow asymmetry
-  → VPIN (Volume-synchronized PIN): high-frequency version
+    C1 --> R1[Administrative cost of making markets<br/>Fixed: technology, regulatory, back office<br/>Declining over time via electronic markets]
+    C2 --> R2[Market makers accumulate unwanted positions<br/>Holding inventory creates directional risk<br/>Glosten-Milgrom 1985: spread widens with uncertainty]
+    C3 --> R3[Informed traders know price should move<br/>Market makers lose trading against them<br/>Spread must recoup losses from informed flow<br/>Easley-O'Hara: spread = f(PIN)]
 ```
 
 ---
@@ -173,10 +162,9 @@ Modern electronic exchanges use a **maker-taker fee structure** that incentivize
 
 **Order flow imbalance** measures the net directional pressure in the order book — a short-term predictor of price movement:
 
-```
-  ORDER FLOW IMBALANCE (simple definition):
-  OFI = Buy-initiated volume − Sell-initiated volume
+$$\text{OFI} = \text{Buy-initiated volume} - \text{Sell-initiated volume}$$
 
+```
   Measured over a window (e.g., 1 minute, 5 minutes):
   OFI > 0: Net buying pressure → price should rise
   OFI < 0: Net selling pressure → price should fall
@@ -201,11 +189,11 @@ Modern electronic exchanges use a **maker-taker fee structure** that incentivize
 
 ### The Kyle Lambda (Price Impact)
 
+Kyle (1985) model: price impact is PERMANENT when informed.
+
+$$\Delta P = \lambda \times \text{OFI}$$
+
 ```
-  Kyle (1985) model: price impact is PERMANENT when informed
-
-  ΔP = λ × OFI
-
   λ (Kyle's Lambda) = price impact per unit of order flow
   → Low λ: liquid market; large volume needed to move price
   → High λ: illiquid market; even small OFI moves price significantly
@@ -220,11 +208,13 @@ Modern electronic exchanges use a **maker-taker fee structure** that incentivize
   → VWAP (Volume-Weighted Average Price): concentrates in high-volume periods
   → IS (Implementation Shortfall): optimize against benchmark
 
+```
   Rule of thumb (equity markets):
-  → Market impact ≈ σ × √(Q/V)  (rough estimate)
   → σ = daily volatility, Q = order size, V = daily volume
   → Example: σ=1%, Q=1% of ADV → impact ≈ ~0.1%
 ```
+
+$$\text{Market impact} \approx \sigma \times \sqrt{\frac{Q}{V}}$$
 
 ---
 

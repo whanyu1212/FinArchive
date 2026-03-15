@@ -23,15 +23,14 @@ Different inflation gauges capture different parts of the price level. FX trader
 | **Wage Growth / Average Hourly Earnings** | Labour cost inflation; sticky component | Monthly (with NFP) |
 | **Breakeven Inflation** | Market-implied inflation (TIPS spreads) | Real-time via bond market |
 
-```
-  Inflation transmission chain:
-  PPI (input costs)
-    → wages (labour market tightness)
-      → CPI/PCE (consumer prices)
-        → breakeven inflation expectations
-          → Central bank reaction function
-            → Interest rates
-              → FX rates
+```mermaid
+flowchart TD
+    A[PPI — input costs] --> B[Wages — labour market tightness]
+    B --> C[CPI / PCE — consumer prices]
+    C --> D[Breakeven inflation expectations]
+    D --> E[Central bank reaction function]
+    E --> F[Interest rates]
+    F --> G[FX rates]
 ```
 
 ---
@@ -52,31 +51,29 @@ Central banks set policy based on their **mandate**:
 
 ### Taylor Rule: A Framework for Rate Decisions
 
-```
-  Taylor Rule (simplified):
-  Rate = r* + π + α(π − π*) + β(y − y*)
+$$\text{Rate} = r^* + \pi + \alpha(\pi - \pi^*) + \beta(y - y^*)$$
 
-  Where:
-  r*  = Neutral real interest rate (~2%)
-  π   = Actual inflation
-  π*  = Inflation target (2%)
-  y   = Actual GDP / output
-  y*  = Potential GDP
-  α   = Weight on inflation gap (typically 0.5)
-  β   = Weight on output gap (typically 0.5)
+Where:
+- $r^*$ = Neutral real interest rate (~2%)
+- $\pi$ = Actual inflation
+- $\pi^*$ = Inflation target (2%)
+- $y$ = Actual GDP / output
+- $y^*$ = Potential GDP
+- $\alpha$ = Weight on inflation gap (typically 0.5)
+- $\beta$ = Weight on output gap (typically 0.5)
 
-  Example (2022 US calibration):
-  r* = 0.5% (estimated neutral)
-  π  = 8.0% (CPI)
-  π* = 2.0%
-  (y − y*) ≈ +2% (very tight labour market)
+Given: $r^* = 0.5\%$, $\pi = 8.0\%$ (CPI), $\pi^* = 2.0\%$, $(y - y^*) = +2\%$ (very tight labour market)
 
-  Taylor rate = 0.5 + 8.0 + 0.5×(8−2) + 0.5×2
-              = 0.5 + 8.0 + 3.0 + 1.0 = 12.5%
+$$
+\begin{align}
+\text{Rate} &= r^* + \pi + 0.5 \times (\pi - \pi^*) + 0.5 \times (y - y^*) \\[6pt]
+  &= 0.5 + 8.0 + 0.5 \times (8.0 - 2.0) + 0.5 \times 2.0 \\[6pt]
+  &= 0.5 + 8.0 + 3.0 + 1.0 \\[6pt]
+  &= \mathbf{12.5\%}
+\end{align}
+$$
 
-  Actual Fed Funds peaked at 5.25% → Fed was BEHIND the curve
-  (which is why USD still rallied — market knew tightening was coming)
-```
+Actual Fed Funds peaked at 5.25% → the Fed was BEHIND the curve (which is why USD still rallied — market knew tightening was coming).
 
 ---
 
@@ -255,9 +252,9 @@ Central banks set policy based on their **mandate**:
 
 **PPP** is a long-run FX theory stating that exchange rates adjust to equalise the price of identical goods across countries:
 
-```
-  PPP: S = P_domestic / P_foreign
+$$S = \frac{P_{\text{domestic}}}{P_{\text{foreign}}}$$
 
+```
   If US prices double while Eurozone prices stay flat:
   → PPP implies EUR/USD should rise (USD must weaken)
   → USD has less purchasing power

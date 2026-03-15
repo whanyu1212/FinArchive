@@ -56,20 +56,16 @@ Garman-Kohlhagen (GK) — the FX adaptation of Black-Scholes — is the market s
 
 Dupire (1994) showed that if you know all European call prices C(K, T) for every strike K and maturity T, the local volatility is uniquely determined:
 
-```
-  Dupire's Local Volatility Formula:
+$$
+\sigma^2(K,T) = \frac{\partial C/\partial T + (r_d - r_f) K \,\partial C/\partial K + r_f C}{\tfrac{1}{2} K^2 \,\partial^2 C/\partial K^2}
+$$
 
-         ∂C/∂T + (r_d - r_f)·K·∂C/∂K + r_f·C
-  σ²(K,T) = ──────────────────────────────────────
-                  ½·K²·∂²C/∂K²
-
-  Where:
-  C(K,T)  = market price of European call with strike K, maturity T
-  ∂C/∂T   = slope of call price vs. maturity ("calendar spread" sensitivity)
-  ∂C/∂K   = slope vs. strike
-  ∂²C/∂K² = second derivative vs. strike (risk-neutral probability density)
-  r_d, r_f = domestic and foreign interest rates
-```
+Where:
+- $C(K,T)$ = market price of European call with strike $K$, maturity $T$
+- $\partial C/\partial T$ = slope of call price vs. maturity ("calendar spread" sensitivity)
+- $\partial C/\partial K$ = slope vs. strike
+- $\partial^2 C/\partial K^2$ = second derivative vs. strike (risk-neutral probability density)
+- $r_d, r_f$ = domestic and foreign interest rates
 
 > Reference: Dupire, B. (1994). *Pricing with a Smile.* Risk Magazine, 7(1), 18–20.
 
@@ -77,13 +73,13 @@ Dupire (1994) showed that if you know all European call prices C(K, T) for every
 
 Instead of pricing backwards from expiry (backward PDE), Dupire derived a **forward PDE** that propagates prices forward from today:
 
-```
-  ∂C/∂T = ½·σ²(K,T)·K²·∂²C/∂K² − (r_d − r_f)·K·∂C/∂K − r_f·C
+$$
+\frac{\partial C}{\partial T} = \tfrac{1}{2}\sigma^2(K,T)\,K^2\,\frac{\partial^2 C}{\partial K^2} - (r_d - r_f)\,K\,\frac{\partial C}{\partial K} - r_f C
+$$
 
-  → Fix today's spot and time (S₀, t₀)
-  → Solve FORWARD across all maturities T and strikes K
-  → Dramatically more efficient for pricing many options at once
-```
+- Fix today's spot and time $(S_0, t_0)$
+- Solve **forward** across all maturities $T$ and strikes $K$
+- Dramatically more efficient for pricing many options at once
 
 ### Local Vol in Practice: Limitations
 
@@ -189,29 +185,24 @@ Heston's breakthrough was deriving a **semi-closed-form solution** via character
 
 ### Heston vs. Local Vol: What Each Captures
 
-```
-  ┌──────────────────────────────────────────────────────────────┐
-  │             HESTON ADVANTAGE                                 │
-  │ → Realistic vol dynamics: vol spikes when spot falls         │
-  │ → Captures persistence of long-dated skew                    │
-  │ → Economically interpretable parameters                      │
-  │ → Better delta hedging (correct skew dynamics)               │
-  └──────────────────────────────────────────────────────────────┘
-
-  ┌──────────────────────────────────────────────────────────────┐
-  │             LOCAL VOL ADVANTAGE                              │
-  │ → Perfect calibration to all market vanilla prices           │
-  │ → No model risk for vanilla options (by construction)        │
-  │ → Simpler to implement                                       │
-  └──────────────────────────────────────────────────────────────┘
-
-  ┌──────────────────────────────────────────────────────────────┐
-  │             HESTON DISADVANTAGE                              │
-  │ → Cannot perfectly fit all market smiles (especially         │
-  │   steep short-dated skews)                                   │
-  │ → Feller condition (2κθ > ξ²) must hold for V > 0          │
-  │ → Calibration to entire surface is harder                   │
-  └──────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    subgraph HestonPro["Heston — Advantages"]
+        H1[Realistic vol dynamics: vol spikes when spot falls]
+        H2[Captures persistence of long-dated skew]
+        H3[Economically interpretable parameters]
+        H4[Better delta hedging via correct skew dynamics]
+    end
+    subgraph LVPro["Local Vol — Advantages"]
+        L1[Perfect calibration to all market vanilla prices]
+        L2[No model risk for vanilla options by construction]
+        L3[Simpler to implement]
+    end
+    subgraph HestonCon["Heston — Disadvantages"]
+        D1[Cannot perfectly fit steep short-dated skews]
+        D2["Feller condition 2κθ > ξ² must hold for V > 0"]
+        D3[Calibration to entire surface is harder]
+    end
 ```
 
 ---
@@ -243,19 +234,25 @@ In practice, major FX options desks use **Local-Stochastic Volatility (LSV)** mo
 
 ### Why LSV Is Necessary
 
-```
-  Pricing a barrier option on EUR/USD:
-  ─────────────────────────────────────────────────────────
-  Garman-Kohlhagen: Fast, wrong dynamics → misprices barrier
-  Local Vol:        Perfect smile fit, wrong dynamics → misprices
-                    barrier due to incorrect path distribution
-  Heston only:      Correct dynamics, imperfect smile fit
-                    → misprices barrier differently
-  LSV:              Perfect smile fit + correct dynamics
-                    → Best available pricing for path-dependent payoffs
+```mermaid
+flowchart TD
+    A[Price a Barrier Option] --> B[Garman-Kohlhagen]
+    A --> C[Local Vol — Dupire]
+    A --> D[Heston Only]
+    A --> E[LSV — Local-Stochastic Vol]
 
-  Cost: Computationally intensive (Monte Carlo simulation required)
-  Reality: All tier-1 banks price exotics with LSV or extensions
+    B --> B1[Fast ✓ — Wrong dynamics ✗ — Misprices barrier]
+    C --> C1[Perfect smile fit ✓ — Wrong dynamics ✗ — Incorrect path dist]
+    D --> D1[Correct dynamics ✓ — Imperfect smile fit ✗]
+    E --> E1[Perfect smile fit ✓ + Correct dynamics ✓ — Best available]
+
+    classDef best fill:#d4edda,stroke:#28a745,color:#155724;
+    classDef partial fill:#fff3cd,stroke:#ffc107,color:#856404;
+    classDef poor fill:#f8d7da,stroke:#dc3545,color:#721c24;
+
+    class E1 best;
+    class C1,D1 partial;
+    class B1 poor;
 ```
 
 ---

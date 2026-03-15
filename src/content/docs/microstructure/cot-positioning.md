@@ -13,30 +13,17 @@ The **Commitments of Traders (COT)** report is one of the most powerful publicly
 
 ### What It Is
 
-```
-  CFTC (Commodity Futures Trading Commission) requires:
-  → All traders above a reporting threshold to disclose positions
-  → Published weekly (every Friday; reflects Tuesday positions)
-  → Covers: futures and options combined; US-regulated exchanges
-    (CME, NYMEX, CBOT, ICE US, CBOE)
-  → Applies to: commodities, FX, interest rates, equity indices
+CFTC requires all traders above a reporting threshold to disclose positions. Published weekly (every Friday; reflects Tuesday positions). Covers futures and options on US-regulated exchanges (CME, NYMEX, CBOT, ICE US, CBOE) for commodities, FX, interest rates, and equity indices.
 
-  Report types:
-  ┌─────────────────────────────────────────────────────────┐
-  │ LEGACY COT: original format since 1968                  │
-  │   → Splits traders into Commercial and Non-Commercial   │
-  │                                                         │
-  │ DISAGGREGATED COT: more granular (since 2009)           │
-  │   → Producer/Merchant, Swap Dealer, Managed Money,      │
-  │     Other Reportable, Non-Reportable                    │
-  │                                                         │
-  │ TRADERS IN FINANCIAL FUTURES (TFF): since 2010          │
-  │   → Dealer/Intermediary, Asset Manager/Institutional,   │
-  │     Leveraged Funds, Other Reportable                   │
-  └─────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    COT[COT Report Types] --> L[Legacy COT — since 1968]
+    COT --> D[Disaggregated COT — since 2009]
+    COT --> T[Traders in Financial Futures TFF — since 2010]
 
-  Most widely used: Legacy COT for commodities
-                    TFF for FX and financials
+    L --> L1[Splits into Commercial and Non-Commercial<br/>Most widely used for commodities]
+    D --> D1[Producer/Merchant · Swap Dealer<br/>Managed Money · Other Reportable · Non-Reportable<br/>More granular; preferred for commodity analysis]
+    T --> T1[Dealer/Intermediary · Asset Manager/Institutional<br/>Leveraged Funds · Other Reportable<br/>Best format for FX and financials]
 ```
 
 ### Reporting Categories (Legacy COT)
@@ -117,7 +104,11 @@ The most powerful application of COT data is as a **contrarian/positioning extre
 
   HOW TO APPLY COT:
   1. Normalize net positions:
-     Net position index = (Current − Min) / (Max − Min) × 100
+```
+
+$$\text{Net position index} = \frac{\text{Current} - \text{Min}}{\text{Max} - \text{Min}} \times 100$$
+
+```
      → 0 = maximum historical net short
      → 100 = maximum historical net long
 
@@ -230,33 +221,22 @@ The most powerful application of COT data is as a **contrarian/positioning extre
 
 ## Combining COT with Technical Analysis
 
+```mermaid
+flowchart TD
+    A[COT Positioning Extreme<br/>Is positioning crowded?] --> B[Fundamental Catalyst<br/>Is there a reason to reverse?]
+    B --> C[Technical Trigger<br/>Price action confirms the turn]
+    C --> D[High-conviction contrarian trade]
+
+    EG1[Gold Q3 2022<br/>MM at 3-year record net SHORT] --> EG1A[USD peaking — Fed nearing end of hikes]
+    EG1A --> EG1B[Weekly divergence; $1,620 support held]
+    EG1B --> EG1C[Gold rallied $1,620 → $2,100 over 15 months]
+
+    EG2[Crude May 2023<br/>MM record net SHORT on WTI] --> EG2A[OPEC+ surprise cut April 2023]
+    EG2A --> EG2B[$65 support held; weekly outside reversal bar]
+    EG2B --> EG2C[WTI rallied $65 → $95]
 ```
-  MOST POWERFUL FRAMEWORK: COT + Price Action + Fundamentals
 
-  Step 1: COT positioning extreme (is positioning crowded?)
-  Step 2: Fundamental catalyst (is there a reason to reverse?)
-  Step 3: Technical trigger (price action confirms the turn)
-
-  Example — Gold Q3 2022:
-  COT: Managed Money at 3-year record net SHORT
-  Fundamental: USD peaking (Fed nearing end of hike cycle priced)
-  Technical: Weekly price divergence; support at $1,620 held
-
-  → All three aligned → Gold rallied from $1,620 to $2,100 over 15 months
-
-  Example — Crude Oil May 2023:
-  COT: Managed Money record net SHORT on WTI
-  Fundamental: OPEC+ surprise cut (April 2023)
-  Technical: Price held $65 support; weekly outside reversal bar
-
-  → Short covering + new longs → WTI rallied from $65 to $95
-
-  WARNING: COT alone is insufficient:
-  → Positions can get MORE extreme before reversing
-  → "The market can stay irrational longer than you can stay solvent"
-  → Always require a CATALYST or PRICE ACTION confirmation
-  → COT is best used as a filter (don't fight trend UNLESS COT extreme)
-```
+**Warning**: COT alone is insufficient. Positions can get more extreme before reversing. Always require a catalyst or price action confirmation — COT is best used as a filter, not a standalone signal.
 
 ---
 

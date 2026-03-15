@@ -227,41 +227,19 @@ The **EFP (Exchange for Physical)** is the critical mechanism linking ICE future
 
 ## The Full Price Discovery Chain
 
+```mermaid
+flowchart TD
+    P1[1. Physical Cargo Trading — BFOE Forward Market<br/>Oil majors/traders negotiate 600,000-bbl cargoes<br/>Sets forward BFOE prices monthly]
+    P2[2. CFD Market<br/>Refiners/traders trade timing spreads within months<br/>Sets weekly time spreads within monthly BFOE price]
+    P3[3. Dated Brent — Platts MOC Assessment<br/>Editors assess actual spot trades/bids/offers<br/>BFOE as base + CFDs for timing adjustments<br/>Published 4:30pm London daily]
+    P4[4. EFP Market<br/>Converts physical Dated Brent exposure to ICE futures<br/>Sets the DFL — Dated-to-Futures spread]
+    P5[5. ICE Brent Futures<br/>Most liquid; trades 23 hours<br/>Used by financial investors and hedgers globally]
+
+    P1 --> P2 --> P3 --> P4 --> P5
+    P5 -->|Price discovery feeds back via EFP| P1
 ```
-  HOW DATED BRENT GETS MADE:
-  ──────────────────────────────────────────────────────────────
 
-  1. PHYSICAL CARGO TRADING (BFOE forward market)
-     Oil majors/traders negotiate individual 600,000-bbl cargoes
-     → Sets forward BFOE prices (monthly)
-
-  2. CFD MARKET
-     Refiners/traders trade "timing spreads" within months
-     → Sets the weekly time spreads within the monthly BFOE price
-
-  3. DATED BRENT (PLATTS MOC ASSESSMENT)
-     Platts editors assess actual spot trades/bids/offers
-     using BFOE as the base and CFDs for timing adjustments
-     → Published 4:30pm London daily
-
-  4. EFP MARKET
-     Converts physical Dated Brent exposure to ICE futures
-     → Sets the DFL (Dated-to-Futures spread)
-
-  5. ICE BRENT FUTURES
-     Most liquid; trades 23 hours; used by financial investors
-     and hedgers globally
-     → Price discovery feeds back into physical via EFP
-
-  Each layer provides different information:
-  Futures: Global risk appetite, macro sentiment, financial flows
-  BFOE/Dated: Physical supply/demand, refinery requirements, actual scarcity
-  CFD/EFP: Timing and quality spreads, operational hedging
-
-  Manipulation concern: Platts MOC process has been investigated
-  for potential manipulation (2013 EC investigation; 2016 fines)
-  → Now: stricter reporting requirements; algorithmic monitoring
-```
+Each layer provides different information: Futures carry global risk appetite and macro sentiment; BFOE/Dated reflect physical supply/demand and actual scarcity; CFD/EFP price timing and quality spreads for operational hedging.
 
 ---
 
