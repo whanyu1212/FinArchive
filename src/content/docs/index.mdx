@@ -1,0 +1,79 @@
+---
+title: FinArchive
+description: A curated financial knowledge base.
+hero:
+  tagline: A curated collection of financial concepts, instruments, and strategies.
+  actions:
+    - text: Start with FX Markets
+      link: /fx/overview/
+      icon: right-arrow
+    - text: Macro Drivers
+      link: /macro/overview/
+      icon: right-arrow
+      variant: minimal
+---
+
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+## Sections
+
+<CardGrid>
+	<Card title="FX Markets" icon="document">
+		Spot, forwards, swaps, cross-currency swaps, vanilla and exotic options, structured products, XVA, pricing models, and vol surface mechanics.
+	</Card>
+	<Card title="Commodities" icon="open-book">
+		Futures curves, Theory of Storage, the Brent complex, crack/spark/dark spreads, and commodity options skew.
+	</Card>
+	<Card title="Macro Drivers" icon="rocket">
+		Interest rates, inflation, central bank policy, yield curve theory, Taylor Rule, R-star, BoP, and safe-haven frameworks.
+	</Card>
+	<Card title="Technical Analysis" icon="magnifier">
+		Dow Theory, chart patterns, moving averages, momentum and volatility indicators, and Fibonacci/Elliott Wave.
+	</Card>
+	<Card title="Market Microstructure" icon="puzzle">
+		Auction Market Theory, Market Profile, limit order books, order flow imbalance, and COT positioning analysis.
+	</Card>
+</CardGrid>
+
+## FX Markets
+
+<CardGrid>
+	<LinkCard title="FX Market Overview" href="/fx/overview/" description="Structure, participants, and conventions of the global FX market." />
+	<LinkCard title="FX Forwards & CIP" href="/fx/forwards/" description="Forward pricing, covered interest parity, and the no-arbitrage framework." />
+	<LinkCard title="Vanilla Options & Greeks" href="/fx/vanilla-options/" description="Garman-Kohlhagen model, delta, gamma, vega, theta, and the vol surface." />
+	<LinkCard title="Exotic Options" href="/fx/exotic-options/" description="Barrier, digital, Asian, KIKO, and other path-dependent structures." />
+	<LinkCard title="Vol Surface & Smile" href="/fx/vol-surface/" description="RR/BF quoting, Malz formula, vanna/volga, and delta conventions." />
+	<LinkCard title="Pricing Models" href="/fx/pricing-models/" description="Dupire local vol, Heston stochastic vol, and LSV hybrid models." />
+	<LinkCard title="XVA & Counterparty Risk" href="/fx/xva/" description="OIS discounting, CVA, DVA, FVA, and the post-2008 valuation framework." />
+	<LinkCard title="Structured Product Engineering" href="/fx/structured-engineering/" description="TARF decomposition, accumulator exotic gamma, and PRDC hedging." />
+</CardGrid>
+
+## Commodities
+
+<CardGrid>
+	<LinkCard title="Commodities Overview" href="/commodities/overview/" description="Futures curves, contango/backwardation, and commodity macro drivers." />
+	<LinkCard title="Curve Dynamics & Theory of Storage" href="/commodities/curve-dynamics/" description="Working's curve, convenience yield, roll yield, and financialization." />
+	<LinkCard title="The Brent Complex" href="/commodities/brent-complex/" description="Dated Brent, BFOE, EFP, ICE futures, and physical price discovery." />
+	<LinkCard title="Refining & Conversion Margins" href="/commodities/refining-margins/" description="Crack spreads, spark spreads, dark spreads, and fuel switching economics." />
+	<LinkCard title="Commodity Options & Skew" href="/commodities/commodity-options/" description="Call skew in agriculture, Asian options, and basis risk in hedging." />
+</CardGrid>
+
+## Macro Drivers
+
+<CardGrid>
+	<LinkCard title="Interest Rates & Carry" href="/macro/interest-rates/" description="Rate differentials, carry trade, yield curve, and policy divergence." />
+	<LinkCard title="Yield Curve Theory" href="/macro/yield-curve-theory/" description="ACM term premium model, PCA Level/Slope/Curvature, and curve signals." />
+	<LinkCard title="Advanced Monetary Policy" href="/macro/monetary-policy-advanced/" description="Taylor Rule, R-star, zero lower bound, shadow rates, and QE channels." />
+	<LinkCard title="BoP & Long-Run FX Valuation" href="/macro/bop-fx-valuation/" description="PPP, Big Mac Index, current account dynamics, and safe-haven theory." />
+	<LinkCard title="Cross-Asset Relationships" href="/macro/cross-asset/" description="How FX interacts with equities, bonds, credit, and commodities." />
+</CardGrid>
+
+## Technical Analysis & Microstructure
+
+<CardGrid>
+	<LinkCard title="Chart Patterns" href="/ta/chart-patterns/" description="Head & shoulders, double tops, triangles, flags, wedges, and cup & handle." />
+	<LinkCard title="Momentum Indicators" href="/ta/momentum-indicators/" description="RSI, MACD, Stochastic — formulas, signals, and divergence." />
+	<LinkCard title="Auction Market Theory" href="/microstructure/auction-market/" description="Market Profile, Value Area, POC, and initiative vs. responsive behavior." />
+	<LinkCard title="Order Flow & Limit Order Books" href="/microstructure/order-flow/" description="LOB mechanics, maker-taker, iceberg orders, and Kyle's Lambda." />
+	<LinkCard title="COT Positioning & Open Interest" href="/microstructure/cot-positioning/" description="CFTC report interpretation, positioning extremes, and contrarian signals." />
+</CardGrid>

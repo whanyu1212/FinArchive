@@ -1,0 +1,268 @@
+---
+title: Structured Product Engineering
+description: Reverse-engineering TARFs, accumulators, and other complex FX structures — decomposition, bank hedging, and the exotic gamma problem.
+sidebar:
+  order: 13
+---
+
+Understanding structured products at an expert level means being able to **decompose** them into their constituent option components, understand the **bank's hedging problem**, and recognise the **asymmetric risk profile** from the client's perspective.
+
+---
+
+## TARF: Full Decomposition
+
+A **Target Redemption Forward (TARF)** appears to offer a client a better-than-market forward rate — in exchange for a hidden portfolio of short options.
+
+### Stripping the TARF
+
+```
+  TARF Terms (example):
+  Notional per fixing:  EUR 1,000,000
+  Settlements:          12 monthly fixings
+  TARF forward rate:    EUR/USD 1.0950  (spot = 1.0850)
+  Target gain:          USD 300,000 total
+  Knockout:             None (standard TARF)
+
+  At each fixing, client settlement:
+  If EUR/USD fixing > 1.0950: client gains = (fixing − 1.0950) × €1m
+  If EUR/USD fixing < 1.0950: client LOSES = (1.0950 − fixing) × €1m
+```
+
+### Breaking It Down
+
+```
+  TARF = Strip of 12 monthly EUR/USD forwards at 1.0950
+         + Target knock-out barrier (terminates when gains hit $300k)
+         + Client is LONG 12 digital call options (receives gains monthly)
+         + Client is SHORT 12 EUR puts (absorbs losses monthly)
+
+  More precisely, each monthly settlement is:
+  Client long:  call on EUR/USD with strike 1.0950 (receives upside)
+  Client short: put on EUR/USD with strike 1.0950 (pays downside)
+  = Forward at 1.0950 (but this forward is better than market!)
+
+  Why is the forward rate above market?
+  → The target knock-out CAPS total gains at $300k
+  → Client has SOLD a strip of binary call options to the bank
+    (each option pays $1 when total gains hit the target → terminate)
+  → This premium is used to subsidise the better forward rate
+
+  The TARF gives client a better rate by:
+  1. Capping total upside (target mechanism = sold strip of digitals)
+  2. Leaving downside fully exposed (no floor on losses)
+```
+
+### TARF Payoff Asymmetry: Visualised
+
+```
+  Monthly EUR/USD fixing scenarios for client:
+  ─────────────────────────────────────────────────────────
+  Fixing > 1.0950:  +gain — but accumulates toward $300k target
+                    Once target hit → structure terminates (no more gains)
+  Fixing < 1.0950:  −loss — no floor, continues every month
+
+  CLIENT P&L profile (total over life):
+      +$300k ├───── TARGET (maximum gain; terminates here)
+             │         /───── gains build each favorable month
+      $0     ├────────────────────────────────────────── Months
+             │╲
+             │ ╲──── losses build every unfavorable month
+             │         (continue until full 12 months done)
+     −large  ├────── NO FLOOR: if EUR/USD drops to 1.00, loss = 0.0950 × €1m
+                     × remaining months = potentially millions
+
+  The TARF is structurally a:
+  → Capped long call strip (limited by target)
+  → Uncapped short put strip (unlimited loss)
+```
+
+### Bank Hedging of the TARF
+
+When a bank sells a TARF to a client, it has the opposite exposure:
+
+```
+  Bank position = mirror image of client:
+  Bank is SHORT the client's call strip (pays gains when EUR rises)
+  Bank is LONG the client's put strip (receives losses when EUR falls)
+  Bank is SHORT the target knock-out option (terminates early = good for bank)
+
+  Bank delta hedge:
+  → Sells EUR/USD forward each month as EUR rises (short delta)
+  → Buys EUR/USD forward each month as EUR falls (long delta)
+
+  Bank's exotic risks:
+  → SHORT GAMMA on the target barrier: near the target level,
+    small EUR moves can trigger or prevent termination → large gamma
+  → PATH DEPENDENCY: the remaining life of the TARF depends
+    on the entire historical path of gains accumulated
+  → VOLGA (vol-of-vol exposure): through the option strips embedded
+  → THETA POSITIVE: as time passes without the target being hit,
+    the knock-out option decays in value (good for the bank)
+```
+
+---
+
+## Accumulator / Decumulator: Full Mechanics
+
+The **accumulator** (or "Accumulate if spot is favourable / Double up if adverse"):
+
+### Structure Detail
+
+```
+  Typical USD/CNH accumulator for Chinese exporter:
+  ─────────────────────────────────────────────────────────
+  Spot rate:         7.1500
+  Strike (deal rate): 7.1000  (better than spot — client sells USD cheaper)
+  Knock-out:         7.2500  (contract terminates if USD gets too strong)
+  Knock-in (doubler): 6.9500  (client must sell DOUBLE notional if CNH weakens)
+  Tenor:             12 months, monthly fixings
+  Notional:          USD 1,000,000 per fixing (or $2m if knocked in)
+  ─────────────────────────────────────────────────────────
+
+  Each monthly fixing:
+  ┌─────────────────────────────────────────────────────────┐
+  │ 6.9500 < fixing < 7.2500:  Sell USD 1m at 7.1000       │
+  │ fixing < 6.9500 (KI):       Sell USD 2m at 7.1000      │
+  │ fixing > 7.2500 (KO):       Contract terminated ✓       │
+  └─────────────────────────────────────────────────────────┘
+```
+
+### Decomposing the Accumulator
+
+```
+  ACCUMULATOR = Strip of 12 monthly:
+  (A) Short USD call / Long USD put at 7.1000 (sell USD at strike)
+  (B) Short additional USD put at 7.1000 × knocked-in indicator
+      (the doubler = selling additional put if spot below 6.9500)
+  (C) Long USD call at 7.2500 (knock-out = long KO call strip)
+
+  Simplified:
+  Client is:
+  LONG monthly forward to sell USD at 7.1000 (beneficial — above spot)
+  SHORT monthly KO barrier at 7.2500 (gives bank right to terminate early)
+  SHORT monthly DI put at 6.9500 (if CNH strengthens, client doubles loss)
+
+  Why is the deal rate better than market (7.1000 vs. 7.1500 spot)?
+  → Client sold two options to fund the better rate:
+    1. The knock-out (gives up upside if USD strengthens beyond 7.25)
+    2. The doubler put (doubles notional if CNH weakens beyond 6.95)
+```
+
+### The Exotic Gamma Problem for Banks
+
+```
+  Bank's hedging challenge (mirror of accumulator):
+  Bank is LONG USD at 7.1000 each month (client sells to them)
+  Bank is SHORT the doubler (bank must buy $2m from client at 7.10
+        even if market is 6.50 — a massive loss for the bank)
+
+  Bank's exotic gamma near knock-in (6.9500):
+  ─────────────────────────────────────────────────────────
+  Just above 6.9500: normal exposure (USD 1m per fixing)
+  Just below 6.9500: doubled exposure (USD 2m per fixing)
+  → HUGE gamma at the knock-in level
+  → As spot approaches 6.9500, bank's delta changes rapidly
+  → To delta-hedge: bank must buy USD aggressively as spot approaches KI
+  → This bank buying creates MARKET IMPACT: self-reinforcing dynamics
+
+  When many banks have similar structures:
+  → As USD/CNH drops toward knock-in levels across many accumulators
+  → All banks simultaneously bid for USD
+  → Creates "support" at the knock-in level (structural demand)
+  → Until it breaks: then forced hedging accelerates the move
+  ─────────────────────────────────────────────────────────
+
+  This is the "Accumulator as systemic risk" problem:
+  During 2008 GFC, thousands of USD/HKD and USD/AUD accumulators
+  triggered knock-in doublers simultaneously → amplified FX moves
+```
+
+---
+
+## PRDC Engineering (Power Reverse Dual Currency)
+
+PRDCs — common in Japan — demonstrate the most complex interaction of FX and rate risk:
+
+### Decomposing a 20-Year PRDC
+
+```
+  PRDC coupon formula (simplified):
+  Coupon_t = max(α × S_t / S_0 − β, 0) × Notional
+
+  Where:
+  S_t = USD/JPY spot at coupon date t
+  S_0 = USD/JPY at inception (e.g., 110)
+  α   = participation rate (e.g., 7%)
+  β   = floor adjustment (e.g., 0%)
+
+  Example at inception:
+  If USD/JPY = 110, α = 7%: coupon = 7% × 110/110 = 7% p.a.
+  If USD/JPY = 130: coupon = 7% × 130/110 = 8.27% p.a.  ← JPY weakens
+  If USD/JPY =  90: coupon = 7% × 90/110  = 5.73% p.a.  ← JPY strengthens
+  If USD/JPY =  75: coupon = max(7% × 75/110 − 0, 0) = 4.77% p.a.
+  If USD/JPY =  50: coupon = 7% × 50/110 = 3.18% p.a.  ← extremely bad
+
+  Decomposition:
+  PRDC = Zero coupon bond (capital protection)
+         + Strip of long-dated USD/JPY call options (coupon kickers)
+         + Callable feature (Bermudan swaption embedded for the issuer)
+         + Negative carry at low USD/JPY (lost coupon if JPY appreciates)
+```
+
+### Bank Hedging of PRDCs
+
+```
+  Bank short PRDC to investor:
+  → Bank is LONG USD/JPY (gains if JPY weakens → higher coupons)
+  → Bank hedges: sells USD/JPY forward strip
+  → As USD/JPY falls (JPY strengthens), bank delta INCREASES
+    → Must sell MORE USD/JPY in the market to stay hedged
+  → Mass hedging of PRDC books caused USD/JPY selling in 2008–2012
+    → Self-reinforcing JPY appreciation cycle
+
+  Cross-gamma: PRDC has USD/JPY × rates correlation risk
+  → As US rates rise AND USD/JPY rises: coupon explodes (bank loses)
+  → Requires hedging both the FX leg and the rates leg
+  → Also callable: as rates fall, call becomes valuable → bank must
+    buy swaptions to hedge the embedded call
+
+  PRDC = one of the most complex multi-dimensional hedging problems
+```
+
+---
+
+## Common Principles Across Structured Products
+
+```
+  Rule: ALL structured products offer "free money" somewhere.
+        Ask: WHAT HAVE I SOLD TO PAY FOR THIS?
+
+  TARF: Sold a target cap + short put strip
+  Accumulator: Sold a KO cap + double put at KI
+  DCD: Sold a vanilla put
+  Range Accrual: Sold a strip of digitals (out-of-range = zero coupon)
+  PRDC: Sold USD/JPY correlation + callable optionality
+
+  Client risk profile vs. bank risk profile:
+  ─────────────────────────────────────────────────────────
+  Client: capped upside / uncapped downside = long call + short put
+  Bank:   capped downside / uncapped upside = short call + long put
+          (PLUS the exotic hedging problem)
+
+  Banks hedge by:
+  1. Delta hedging with spot/forwards
+  2. Vega hedging with vanilla options
+  3. Gamma hedging with shorter-dated options
+  4. Exotics desk manages residual path-dependent Greeks
+     (vanna, volga, correlation, barrier delta)
+```
+
+---
+
+## Further Reading
+
+- Fincyclopedia: *FX TARN* — [fincyclopedia.net](https://fincyclopedia.net/forex/f-forex/fx-target-accrual-redemption-note/)
+- IMF Finance & Development: *Playing with Fire* (KIKO/TARN losses) — [imf.org](https://www.imf.org/external/pubs/ft/fandd/2009/06/dodd.htm)
+- HKUST: *Structured Notes Primer* — [math.hkust.edu.hk](https://www.math.hkust.edu.hk/~maykwok/courses/FINA690K/06/1.2_structured.pdf)
+- *FX Options and Structured Products* — Uwe Wystup (Wiley, 2006)
+- *Exotic Options and Hybrids* — Mohamed Bouzoubaa & Adel Osseiran (Wiley, 2010)
